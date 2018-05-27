@@ -1,0 +1,110 @@
+variables:
+  cmake_version_major: "3"
+  cmake_version_minor: "11"
+  cmake_version_patch: "2"
+  cmake_installer: "cmake-${cmake_version_major}.${cmake_version_minor}.${cmake_version_patch}-Linux-x86_64.sh"
+  android_ndk_version: "r17"
+  android_sdk_version: "27"
+  sdk_tools_version: "4333796"
+
+stages:
+  - build
+
+android:
+  image: openjdk
+  stage: build
+  script:
+    # Make
+    - apt update && apt -y install make
+    # CMake
+    - wget --no-verbose https://cmake.org/files/v${cmake_version_major}.${cmake_version_minor}/${cmake_installer}
+    - sh ./${cmake_installer} --prefix=/usr --skip-license
+    # Android NDK
+    - wget --no-verbose https://dl.google.com/android/repository/android-ndk-${android_ndk_version}-linux-x86_64.zip
+    - unzip -q android-ndk-${android_ndk_version}-linux-x86_64.zip
+    # Android SDK
+    - wget --no-verbose https://dl.google.com/android/repository/sdk-tools-linux-${sdk_tools_version}.zip
+    - unzip -q sdk-tools-linux-${sdk_tools_version}.zip
+    - export ANDROID_HOME=${CI_PROJECT_DIR}
+    - mkdir ~/.android
+    - touch ~/.android/repositories.cfg
+    - set +o pipefail
+    - yes | $ANDROID_HOME/tools/bin/sdkmanager --licenses 1>/dev/null
+    - set -o pipefail
+    # Environment
+    - lscpu
+    - cat /proc/meminfo | grep MemTotal
+    - java -version
+    # Build
+    - mkdir _build
+    - cd _build
+    - cmake -DCMAKE_SYSTEM_NAME=Android -DCMAKE_SYSTEM_VERSION=${android_sdk_version} -DCMAKE_ANDROID_ARCH_ABI=armeabi-v7a -DCMAKE_ANDROID_NDK=$ANDROID_HOME/android-ndk-${android_ndk_version} -DCMAKE_ANDROID_STL_TYPE=c++_static ..
+    - make
+    - mkdir _package
+    - find . -name \*.apk -exec mv {} _package/ \;
+  artifacts:
+    paths:
+      - _build/_package/*.apk
+
+ios:
+  stage: build
+  script:
+    - mkdir _build
+    - cd _build
+    - cmake -G Xcode -DCMAKE_TOOLCHAIN_FILE=../ios.toolchain.cmake -DIOS_ARCH="armv7 armv7s" -DENABLE_BITCODE=FALSE ..
+    - cmake --build . --config Release
+  tags:
+    - ios
+  allow_failure: true
+
+linux:
+  image: gcc
+  stage: build
+  script:
+    # CMake
+    - wget --no-verbose https://cmake.org/files/v${cmake_version_major}.${cmake_version_minor}/${cmake_installer}
+    - sh ./${cmake_installer} --prefix=/usr --skip-license
+    # SDL prerequisites
+    - apt update && apt -y install libasound2-dev freeglut3-dev
+    # SFML prerequisites
+    - apt -y install libflac-dev libfreetype6-dev libjpeg-dev libopenal-dev libudev-dev libvorbis-dev libxrandr-dev
+    # Environment
+    - lscpu
+    - cat /proc/meminfo | grep MemTotal
+    - gcc --version
+    # Build
+    - mkdir _build
+    - cd _build
+    - cmake -DCMAKE_BUILD_TYPE=Release ..
+    - make package -j 4
+  artifacts:
+    paths:
+      - _build/_package/*.tar.gz
+
+mac:
+  stage: build
+  script:
+    - mkdir _build
+    - cd _build
+    - cmake -DCMAKE_BUILD_TYPE=Release ..
+    - make package -j 4
+  artifacts:
+    paths:
+      - _build/_package/*.zip
+  tags:
+    - mac
+  allow_failure: true
+
+windows:
+  stage: build
+  script:
+    - mkdir _build
+    - cd _build
+    - cmake ..
+    - cmake --build . --config Release --target PACKAGE -- /m
+  artifacts:
+    paths:
+      - _build/_package/*.zip
+  tags:
+    - windows
+  allow_failure: true
