@@ -50,4 +50,3 @@ set_property(DIRECTORY zlib PROPERTY FOLDER 3rdparty/zlib)
 
 add_subdirectory(SDL2)
 set_property(DIRECTORY SDL2 PROPERTY FOLDER 3rdparty)
-

@@ -1,26 +1,30 @@
-cmake_minimum_required(VERSION 3.8.2)
+cmake_minimum_required(VERSION 3.11.0)
 
 project(Games)
+
+set(company dnqpy)
 
 set(version_major 0)
 set(version_minor 1)
 set(version_patch 0)
-
 if(ANDROID)
-    set(CMAKE_CXX_STANDARD 14)
-else()
-    set(CMAKE_CXX_STANDARD 17)
+    set(version_code 1)
+    set(android_min_sdk_version 15)
 endif()
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-if(APPLE AND NOT IOS)
-    set(CMAKE_OSX_DEPLOYMENT_TARGET "10.9" CACHE STRING "Minimum OS X deployment version" FORCE)
-endif()
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 if(IOS)
     set(xcode_code_sign_identity "iPhone Developer")
+elseif(APPLE)
+    set(xcode_code_sign_identity "Developer ID Application")
+    set(CMAKE_OSX_DEPLOYMENT_TARGET "10.9" CACHE STRING "Minimum OS X deployment version" FORCE)
+endif()
+
+if(APPLE)
     set(xcode_dev_team MLPC343Q5F)
-    set(MACOSX_BUNDLE_GUI_IDENTIFIER "com.mycompany.\${PRODUCT_NAME:identifier}")
+    set(MACOSX_BUNDLE_GUI_IDENTIFIER "com.${company}.\${PRODUCT_NAME:identifier}")
 endif()
 
 if(MSVC)

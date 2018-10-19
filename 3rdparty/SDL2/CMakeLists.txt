@@ -10,12 +10,13 @@ get_archive(
 
 option(SDL_SHARED "Build a shared version of the library" OFF)
 
+# Copy over an edited version of the SDL2 CMakeLists.txt file with the following changes:
+# https://bugzilla.libsdl.org/show_bug.cgi?id=4143
+# https://bugzilla.libsdl.org/show_bug.cgi?id=4178
+# https://bugzilla.libsdl.org/show_bug.cgi?id=4194
+# https://bugzilla.libsdl.org/show_bug.cgi?id=4195
 set(cmakelists_sourcepath ${CMAKE_CURRENT_SOURCE_DIR}/CMakeLists-${library_name}.txt)
 set(cmakelists_destpath ${sdl_library_path}/CMakeLists.txt)
 copy_file(${cmakelists_sourcepath} ${cmakelists_destpath})
 
 add_subdirectory(${sdl_library_path} ${sdl_library_path})
-
-target_include_directories(SDL2-static PUBLIC
-    $<BUILD_INTERFACE:${sdl_library_path}/include>
-)

@@ -1,19 +1,23 @@
 variables:
   cmake_version_major: "3"
-  cmake_version_minor: "11"
-  cmake_version_patch: "2"
+  cmake_version_minor: "12"
+  cmake_version_patch: "3"
   cmake_installer: "cmake-${cmake_version_major}.${cmake_version_minor}.${cmake_version_patch}-Linux-x86_64.sh"
-  android_ndk_version: "r17"
-  android_sdk_version: "27"
+  android_ndk_version: "r18b"
+  android_sdk_version: "28"
   sdk_tools_version: "4333796"
 
 stages:
   - build
 
 android:
-  image: openjdk
+  image: openjdk:8u171
   stage: build
   script:
+    # Environment
+    - lscpu
+    - cat /proc/meminfo | grep MemTotal
+    - java -version
     # Make
     - apt update && apt -y install make
     # CMake
@@ -31,14 +35,10 @@ android:
     - set +o pipefail
     - yes | $ANDROID_HOME/tools/bin/sdkmanager --licenses 1>/dev/null
     - set -o pipefail
-    # Environment
-    - lscpu
-    - cat /proc/meminfo | grep MemTotal
-    - java -version
     # Build
     - mkdir _build
     - cd _build
-    - cmake -DCMAKE_SYSTEM_NAME=Android -DCMAKE_SYSTEM_VERSION=${android_sdk_version} -DCMAKE_ANDROID_ARCH_ABI=armeabi-v7a -DCMAKE_ANDROID_NDK=$ANDROID_HOME/android-ndk-${android_ndk_version} -DCMAKE_ANDROID_STL_TYPE=c++_static ..
+    - cmake -DCMAKE_SYSTEM_NAME=Android -DCMAKE_SYSTEM_VERSION=${android_sdk_version} -DCMAKE_ANDROID_ARCH_ABI=armeabi-v7a -DCMAKE_ANDROID_NDK=$ANDROID_HOME/android-ndk-${android_ndk_version} -DCMAKE_ANDROID_NDK_TOOLCHAIN_VERSION=clang -DCMAKE_ANDROID_STL_TYPE=c++_static -DCMAKE_BUILD_TYPE=Release ..
     - make
     - mkdir _package
     - find . -name \*.apk -exec mv {} _package/ \;
@@ -51,16 +51,31 @@ ios:
   script:
     - mkdir _build
     - cd _build
-    - cmake -G Xcode -DCMAKE_TOOLCHAIN_FILE=../ios.toolchain.cmake -DIOS_ARCH="armv7 armv7s" -DENABLE_BITCODE=FALSE ..
+    - cmake -G Xcode -DCMAKE_TOOLCHAIN_FILE=../ios.toolchain.cmake -DENABLE_BITCODE=FALSE ..
+    - cmake --build . --config Release
+  tags:
+    - ios
+  allow_failure: true
+
+ios-sim:
+  stage: build
+  script:
+    - mkdir _build
+    - cd _build
+    - cmake -G Xcode -DCMAKE_TOOLCHAIN_FILE=../ios.toolchain.cmake -DENABLE_BITCODE=FALSE -DIOS_PLATFORM=SIMULATOR64 ..
     - cmake --build . --config Release
   tags:
     - ios
   allow_failure: true
 
 linux:
-  image: gcc
+  image: gcc:8.2.0
   stage: build
   script:
+    # Environment
+    - lscpu
+    - cat /proc/meminfo | grep MemTotal
+    - gcc --version
     # CMake
     - wget --no-verbose https://cmake.org/files/v${cmake_version_major}.${cmake_version_minor}/${cmake_installer}
     - sh ./${cmake_installer} --prefix=/usr --skip-license
@@ -68,10 +83,6 @@ linux:
     - apt update && apt -y install libasound2-dev freeglut3-dev
     # SFML prerequisites
     - apt -y install libflac-dev libfreetype6-dev libjpeg-dev libopenal-dev libudev-dev libvorbis-dev libxrandr-dev
-    # Environment
-    - lscpu
-    - cat /proc/meminfo | grep MemTotal
-    - gcc --version
     # Build
     - mkdir _build
     - cd _build
@@ -86,8 +97,8 @@ mac:
   script:
     - mkdir _build
     - cd _build
-    - cmake -DCMAKE_BUILD_TYPE=Release ..
-    - make package -j 4
+    - cmake -G Xcode ..
+    - cmake --build . --config Release --target package
   artifacts:
     paths:
       - _build/_package/*.zip
