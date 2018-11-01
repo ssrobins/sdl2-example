@@ -1,47 +1,47 @@
 stages:
   - build
 
-android:
-  image: registry.gitlab.com/ssrobins/docker-android-build
-  stage: build
-  script:
-    # Environment
-    - lscpu
-    - cat /proc/meminfo | grep MemTotal
-    - java -version
-    # Build
-    - export ANDROID_HOME=/root
-    - mkdir _build
-    - cd _build
-    - cmake -DCMAKE_SYSTEM_NAME=Android -DCMAKE_SYSTEM_VERSION=${android_sdk_version} -DCMAKE_ANDROID_ARCH_ABI=armeabi-v7a -DCMAKE_ANDROID_NDK=$ANDROID_HOME/android-ndk-${android_ndk_version} -DCMAKE_ANDROID_NDK_TOOLCHAIN_VERSION=clang -DCMAKE_ANDROID_STL_TYPE=c++_static -DCMAKE_BUILD_TYPE=Release ..
-    - make
-    - mkdir _package
-    - find . -name \*.apk -exec mv {} _package/ \;
-  artifacts:
-    paths:
-      - _build/_package/*.apk
+#android:
+#  image: registry.gitlab.com/ssrobins/docker-android-build
+#  stage: build
+#  script:
+#    # Environment
+#    - lscpu
+#    - cat /proc/meminfo | grep MemTotal
+#    - java -version
+#    # Build
+#    - export ANDROID_HOME=/root
+#    - mkdir _build
+#    - cd _build
+#    - cmake -DCMAKE_SYSTEM_NAME=Android -DCMAKE_SYSTEM_VERSION=${android_sdk_version} -DCMAKE_ANDROID_ARCH_ABI=armeabi-v7a -DCMAKE_ANDROID_NDK=$ANDROID_HOME/android-ndk-${android_ndk_version} -DCMAKE_ANDROID_NDK_TOOLCHAIN_VERSION=clang -DCMAKE_ANDROID_STL_TYPE=c++_static -DCMAKE_BUILD_TYPE=Release ..
+#    - make
+#    - mkdir _package
+#    - find . -name \*.apk -exec mv {} _package/ \;
+#  artifacts:
+#    paths:
+#      - _build/_package/*.apk
 
-ios:
-  stage: build
-  script:
-    - mkdir _build
-    - cd _build
-    - cmake -G Xcode -DCMAKE_TOOLCHAIN_FILE=../ios.toolchain.cmake -DENABLE_BITCODE=FALSE ..
-    - cmake --build . --config Release
-  tags:
-    - ios
-  allow_failure: true
+#ios:
+#  stage: build
+#  script:
+#    - mkdir _build
+#    - cd _build
+#    - cmake -G Xcode -DCMAKE_TOOLCHAIN_FILE=../ios.toolchain.cmake -DENABLE_BITCODE=FALSE ..
+#    - cmake --build . --config Release
+#  tags:
+#    - ios
+#  allow_failure: true
 
-ios-sim:
-  stage: build
-  script:
-    - mkdir _build
-    - cd _build
-    - cmake -G Xcode -DCMAKE_TOOLCHAIN_FILE=../ios.toolchain.cmake -DENABLE_BITCODE=FALSE -DIOS_PLATFORM=SIMULATOR64 ..
-    - cmake --build . --config Release
-  tags:
-    - ios
-  allow_failure: true
+#ios-sim:
+#  stage: build
+#  script:
+#    - mkdir _build
+#    - cd _build
+#    - cmake -G Xcode -DCMAKE_TOOLCHAIN_FILE=../ios.toolchain.cmake -DENABLE_BITCODE=FALSE -DIOS_PLATFORM=SIMULATOR64 ..
+#    - cmake --build . --config Release
+#  tags:
+#    - ios
+#  allow_failure: true
 
 linux:
   image: registry.gitlab.com/ssrobins/docker-linux-build

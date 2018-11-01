@@ -10,7 +10,7 @@ target_include_directories(${target_name} PRIVATE
 )
 
 target_link_libraries(${target_name}
-    SDL2-static
+    CONAN_PKG::sdl2
 )
 
 set_target_properties(${target_name}

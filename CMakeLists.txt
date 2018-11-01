@@ -2,6 +2,9 @@ cmake_minimum_required(VERSION 3.11.0)
 
 project(Games)
 
+include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
+conan_basic_setup(TARGETS)
+
 set(company dnqpy)
 
 set(version_major 0)
@@ -96,7 +99,7 @@ define_property(
 
 enable_testing()
 
-add_subdirectory(3rdparty)
+#add_subdirectory(3rdparty)
 
 # Additional flags to be used everywhere except
 # third-party libs
