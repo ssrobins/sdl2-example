@@ -8,7 +8,6 @@ stages:
 #    # Environment
 #    - lscpu
 #    - cat /proc/meminfo | grep MemTotal
-#    - java -version
 #    # Build
 #    - export ANDROID_HOME=/root
 #    - mkdir _build
@@ -50,10 +49,10 @@ linux:
     # Environment
     - lscpu
     - cat /proc/meminfo | grep MemTotal
-    - gcc --version
     # Build
     - mkdir _build
     - cd _build
+    - conan install ..
     - cmake -DCMAKE_BUILD_TYPE=Release ..
     - make package -j 4
   artifacts:
@@ -65,6 +64,7 @@ mac:
   script:
     - mkdir _build
     - cd _build
+    - conan install ..
     - cmake -G Xcode ..
     - cmake --build . --config Release --target package
   artifacts:
@@ -79,6 +79,7 @@ windows:
   script:
     - mkdir _build
     - cd _build
+    - conan install .. -s arch=x86 -s compiler.runtime=MT
     - cmake ..
     - cmake --build . --config Release --target PACKAGE -- /m
   artifacts:
