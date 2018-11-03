@@ -15,73 +15,31 @@ if(ANDROID)
     set(android_min_sdk_version 15)
 endif()
 
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+set(cmake_file_url https://gitlab.com/ssrobins/cmake-utils/raw/master/global_settings.cmake)
+set(cmake_file_path ${CMAKE_BINARY_DIR}/global_settings.cmake)
+message(STATUS "Downloading ${cmake_file_url} to ${cmake_file_path}...")
+file(DOWNLOAD
+    ${cmake_file_url}
+    ${cmake_file_path}
+    STATUS download_status
+)
+list(GET download_status 0 download_error_code)
+list(GET download_status 1 download_error_msg)
+if(NOT ${download_error_code} EQUAL 0)
+    message(FATAL_ERROR "Download failed, error code ${download_error_code}: ${download_error_msg}")
+endif()
+include(${CMAKE_BINARY_DIR}/global_settings.cmake)
 
 if(IOS)
     set(xcode_code_sign_identity "iPhone Developer")
 elseif(APPLE)
     set(xcode_code_sign_identity "Developer ID Application")
-    set(CMAKE_OSX_DEPLOYMENT_TARGET "10.9" CACHE STRING "Minimum OS X deployment version" FORCE)
 endif()
 
 if(APPLE)
     set(xcode_dev_team MLPC343Q5F)
     set(MACOSX_BUNDLE_GUI_IDENTIFIER "com.${company}.\${PRODUCT_NAME:identifier}")
-endif()
-
-if(MSVC)
-    add_compile_options(
-        $<$<CONFIG:Release>:/Gy> # Enable function-level linking
-        /MP # Multi-processor compilation
-        $<$<CONFIG:>:/MT> #---------|
-        $<$<CONFIG:Debug>:/MTd> #---|-- Statically link the runtime libraries
-        $<$<CONFIG:Release>:/MT> #--|
-        $<$<CONFIG:Release>:/Oi> # Generate intrinsic functions
-        /permissive- # Standard C++ conformance
-        $<$<CONFIG:Debug>:/ZI> # Produces a program database (PDB) that supports edit and continue
-        $<$<CONFIG:Release>:/Zi> # Produces a program database (PDB)
-    )
-    
-    set(linker_flags_debug
-        /SAFESEH:NO # Don't produce an image with a table of safe exceptions handlers
-    )
-    foreach(flag ${linker_flags_debug})
-        set(CMAKE_EXE_LINKER_FLAGS_DEBUG "${CMAKE_EXE_LINKER_FLAGS_DEBUG} ${flag}")
-        set(CMAKE_MODULE_LINKER_FLAGS_DEBUG "${CMAKE_MODULE_LINKER_FLAGS_DEBUG} ${flag}")
-        set(CMAKE_SHARED_LINKER_FLAGS_DEBUG "${CMAKE_SHARED_LINKER_FLAGS_DEBUG} ${flag}")
-    endforeach()
-    
-    set(linker_flags_release
-        /DEBUG # Generate debug information
-        /LTCG:incremental # Link-time code generation
-        /OPT:ICF # Perform identical COMDAT folding
-        /OPT:REF # Eliminates functions and/or data that are never referenced
-    )
-    foreach(flag ${linker_flags_release})
-        set(CMAKE_EXE_LINKER_FLAGS_RELEASE "${CMAKE_EXE_LINKER_FLAGS_RELEASE} ${flag}")
-        set(CMAKE_MODULE_LINKER_FLAGS_RELEASE "${CMAKE_MODULE_LINKER_FLAGS_RELEASE} ${flag}")
-        set(CMAKE_SHARED_LINKER_FLAGS_RELEASE "${CMAKE_SHARED_LINKER_FLAGS_RELEASE} ${flag}")
-    endforeach()
-elseif("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
-    set(linker_flags_gcc
-        -static-libgcc
-        -static-libstdc++
-    )
-    foreach(flag ${linker_flags_gcc})
-        set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${flag}")
-        set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} ${flag}")
-        set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} ${flag}")
-    endforeach()
-elseif(IOS)
-    set(linker_flags_ios
-        "${XCODE_IOS_PLATFORM_VERSION_FLAGS}"
-    )
-    foreach(flag ${linker_flags_ios})
-        set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${flag}")
-        set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} ${flag}")
-        set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} ${flag}")
-    endforeach()
 endif()
 
 set(CMAKE_INSTALL_PREFIX ${PROJECT_BINARY_DIR}/_install)
