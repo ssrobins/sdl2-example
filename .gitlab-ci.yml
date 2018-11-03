@@ -52,7 +52,7 @@ linux:
     # Build
     - mkdir _build
     - cd _build
-    - conan install .. -s compiler.libcxx=libstdc++11
+    - conan install .. -s compiler=gcc -s compiler.version=8.2 -s compiler.libcxx=libstdc++11
     - cmake -DCMAKE_BUILD_TYPE=Release ..
     - make package -j 4
   artifacts:
