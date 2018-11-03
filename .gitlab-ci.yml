@@ -52,7 +52,9 @@ linux:
     # Build
     - mkdir _build
     - cd _build
+    - export CONAN_TRACE_FILE=/tmp/conan_trace.log
     - conan install .. -s compiler=gcc -s compiler.version=8.2 -s compiler.libcxx=libstdc++11
+    - cat /tmp/conan_trace.log
     - cmake -DCMAKE_BUILD_TYPE=Release ..
     - make package -j 4
   artifacts:
