@@ -1,6 +1,6 @@
-cmake_minimum_required(VERSION 3.11.0)
+cmake_minimum_required(VERSION 3.13.0)
 
-project(Games)
+project(Rectangles)
 
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 conan_basic_setup(TARGETS)
@@ -15,7 +15,7 @@ if(ANDROID)
     set(android_min_sdk_version 15)
 endif()
 
-
+# Flags for everything, including third-party libs
 set(cmake_file_url https://gitlab.com/ssrobins/cmake-utils/raw/master/global_settings.cmake)
 set(cmake_file_path ${CMAKE_BINARY_DIR}/global_settings.cmake)
 message(STATUS "Downloading ${cmake_file_url} to ${cmake_file_path}...")
@@ -30,6 +30,19 @@ if(NOT ${download_error_code} EQUAL 0)
     message(FATAL_ERROR "Download failed, error code ${download_error_code}: ${download_error_msg}")
 endif()
 include(${CMAKE_BINARY_DIR}/global_settings.cmake)
+
+# Flags for everything EXCEPT third-party libs
+if(MSVC)
+    add_compile_options(
+        $<$<CONFIG:Release>:/GL> # Whole program optimization
+        /sdl # Enable additional security checks
+        /WX # Warning as error
+    )
+else()
+    add_compile_options(
+        -Werror # Warning as error
+    )
+endif()
 
 if(IOS)
     set(xcode_code_sign_identity "iPhone Developer")
@@ -56,22 +69,6 @@ define_property(
 )
 
 enable_testing()
-
-#add_subdirectory(3rdparty)
-
-# Additional flags to be used everywhere except
-# third-party libs
-if(MSVC)
-    add_compile_options(
-        $<$<CONFIG:Release>:/GL> # Whole program optimization
-        /sdl # Enable additional security checks
-        /WX # Warning as error
-    )
-else()
-    add_compile_options(
-        -Werror # Warning as error
-    )
-endif()
 
 if(CMAKE_SIZEOF_VOID_P EQUAL 8)
     set(bitness 64)
