@@ -57,7 +57,7 @@ linux:
     - mkdir _build
     - cd _build
     - conan remote add ${package_repo} https://api.bintray.com/conan/${package_user}/${package_repo}
-    - conan install .. -s compiler.libcxx=libstdc++11
+    - conan install ..
     - cmake -DCMAKE_BUILD_TYPE=Release ..
     - make package -j 4
   artifacts:
