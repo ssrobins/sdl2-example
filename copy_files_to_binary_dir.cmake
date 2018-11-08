@@ -75,7 +75,7 @@ if(ANDROID)
             ${CMAKE_SOURCE_DIR}/Android
             ${CMAKE_CURRENT_BINARY_DIR}/Android
         COMMAND ${CMAKE_COMMAND} -E copy_directory
-            ${sdl_library_path}/android-project/app/src/main/java/org/libsdl/app
+            ${CONAN_SDL2_ROOT}/android
             ${CMAKE_CURRENT_BINARY_DIR}/Android/app/src/main/java/org/libsdl/app
     )
 
@@ -121,13 +121,12 @@ if(ANDROID)
     )
 
     # Copy native library to Android build location
-    set (lib_filename ${CMAKE_SHARED_LIBRARY_PREFIX}${target_name}${CMAKE_SHARED_LIBRARY_SUFFIX})
     add_custom_command(
         TARGET ${target_name}
         POST_BUILD
         COMMAND cmake -E copy
-            ${CMAKE_CURRENT_BINARY_DIR}/${lib_filename}
-            ${CMAKE_CURRENT_BINARY_DIR}/Android/app/src/main/jniLibs/${CMAKE_ANDROID_ARCH_ABI}/${lib_filename}
+            $<TARGET_FILE:${target_name}>
+            ${CMAKE_CURRENT_BINARY_DIR}/Android/app/src/main/jniLibs/${CMAKE_ANDROID_ARCH_ABI}/$<TARGET_FILE_NAME:${target_name}>
         COMMAND sh ./gradlew assemble
         WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/Android
     )

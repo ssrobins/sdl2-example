@@ -5,24 +5,25 @@ variables:
 stages:
   - build
 
-#android:
-#  image: registry.gitlab.com/ssrobins/docker-android-build
-#  stage: build
-#  script:
-#    # Environment
-#    - lscpu
-#    - cat /proc/meminfo | grep MemTotal
-#    # Build
-#    - export ANDROID_HOME=/root
-#    - mkdir _build
-#    - cd _build
-#    - cmake -DCMAKE_SYSTEM_NAME=Android -DCMAKE_SYSTEM_VERSION=${android_sdk_version} -DCMAKE_ANDROID_ARCH_ABI=armeabi-v7a -DCMAKE_ANDROID_NDK=$ANDROID_HOME/android-ndk-${android_ndk_version} -DCMAKE_ANDROID_NDK_TOOLCHAIN_VERSION=clang -DCMAKE_ANDROID_STL_TYPE=c++_static -DCMAKE_BUILD_TYPE=Release ..
-#    - make
-#    - mkdir _package
-#    - find . -name \*.apk -exec mv {} _package/ \;
-#  artifacts:
-#    paths:
-#      - _build/_package/*.apk
+android:
+  image: registry.gitlab.com/ssrobins/docker-android-build
+  stage: build
+  script:
+    # Environment
+    - lscpu
+    - cat /proc/meminfo | grep MemTotal
+    # Build
+    - export ANDROID_HOME=/root
+    - mkdir _build
+    - cd _build
+    - conan install .. -s arch=armv7 -s compiler=clang -s compiler.version=7.0 -s compiler.libcxx=libstdc++11
+    - cmake -DCMAKE_SYSTEM_NAME=Android -DCMAKE_SYSTEM_VERSION=${android_sdk_version} -DCMAKE_ANDROID_ARCH_ABI=armeabi-v7a -DCMAKE_ANDROID_NDK=$ANDROID_HOME/android-ndk-${android_ndk_version} -DCMAKE_ANDROID_NDK_TOOLCHAIN_VERSION=clang -DCMAKE_ANDROID_STL_TYPE=c++_static -DCMAKE_BUILD_TYPE=Release ..
+    - make
+    - mkdir _package
+    - find . -name \*.apk -exec mv {} _package/ \;
+  artifacts:
+    paths:
+      - _build/_package/*.apk
 
 #ios:
 #  stage: build
