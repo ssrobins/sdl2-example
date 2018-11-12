@@ -26,27 +26,29 @@ android:
     paths:
       - _build/_package/*.apk
 
-#ios:
-#  stage: build
-#  script:
-#    - mkdir _build
-#    - cd _build
-#    - cmake -G Xcode -DCMAKE_TOOLCHAIN_FILE=../ios.toolchain.cmake -DENABLE_BITCODE=FALSE ..
-#    - cmake --build . --config Release
-#  tags:
-#    - ios
-#  allow_failure: true
+ios:
+  stage: build
+  script:
+    - mkdir _build
+    - cd _build
+    - conan install .. -s os=iOS -s arch=armv7 -s os.version=8.0 
+    - cmake -G Xcode -DCMAKE_TOOLCHAIN_FILE=../ios.toolchain.cmake -DENABLE_BITCODE=FALSE ..
+    - cmake --build . --config Release
+  tags:
+    - ios
+  allow_failure: true
 
-#ios-sim:
-#  stage: build
-#  script:
-#    - mkdir _build
-#    - cd _build
-#    - cmake -G Xcode -DCMAKE_TOOLCHAIN_FILE=../ios.toolchain.cmake -DENABLE_BITCODE=FALSE -DIOS_PLATFORM=SIMULATOR64 ..
-#    - cmake --build . --config Release
-#  tags:
-#    - ios
-#  allow_failure: true
+ios-sim:
+  stage: build
+  script:
+    - mkdir _build
+    - cd _build
+    - conan install .. -s os=iOS -s os.version=8.0
+    - cmake -G Xcode -DCMAKE_TOOLCHAIN_FILE=../ios.toolchain.cmake -DENABLE_BITCODE=FALSE -DIOS_PLATFORM=SIMULATOR64 ..
+    - cmake --build . --config Release
+  tags:
+    - ios
+  allow_failure: true
 
 linux:
   image: registry.gitlab.com/ssrobins/docker-linux-build
