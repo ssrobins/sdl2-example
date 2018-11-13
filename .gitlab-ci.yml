@@ -33,7 +33,7 @@ ios:
     - mkdir _build
     - cd _build
     - conan install ../sdl2-example -s os=iOS -s arch=armv7 -s os.version=8.0 
-    - cmake -G Xcode -DCMAKE_TOOLCHAIN_FILE=../ios.toolchain.cmake -DENABLE_BITCODE=FALSE ../sdl2-example
+    - cmake -G Xcode -DCMAKE_TOOLCHAIN_FILE=../sdl2-example/ios.toolchain.cmake -DENABLE_BITCODE=FALSE ../sdl2-example
     - cmake --build . --config Release
   tags:
     - ios
