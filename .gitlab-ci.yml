@@ -20,7 +20,7 @@ android:
     - find . -name \*.apk -exec mv {} _package/ \;
   artifacts:
     paths:
-      - _build/_package/*.apk
+      - build_android/_package/*.apk
 
 ios:
   stage: build
