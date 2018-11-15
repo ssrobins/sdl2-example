@@ -16,6 +16,7 @@ android:
   script:
     - sh ./build_android.sh
   after_script:
+    - cd build_android
     - mkdir _package
     - find . -name \*.apk -exec mv {} _package/ \;
   artifacts:
