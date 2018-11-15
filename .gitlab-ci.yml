@@ -66,14 +66,10 @@ mac:
 windows:
   stage: build
   script:
-    - mkdir _build
-    - cd _build
-    - conan install .. -s arch=x86 -s compiler.runtime=MT
-    - cmake ..
-    - cmake --build . --config Release --target PACKAGE -- /m
+    - build_windows.bat
   artifacts:
     paths:
-      - _build/_package/*.zip
+      - build_windows/_package/*.zip
   tags:
     - windows
   allow_failure: true
