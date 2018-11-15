@@ -1,7 +1,3 @@
-variables:
-  package_user: "stever"
-  package_repo: "conan"
-
 stages:
   - build
 
@@ -12,12 +8,10 @@ before_script:
 android:
   image: registry.gitlab.com/ssrobins/docker-android-build
   stage: build
-  before_script:
+  script:
     - lscpu
     - cat /proc/meminfo | grep MemTotal
-    - export ANDROID_HOME=/root
-    - conan remote add ${package_repo} https://api.bintray.com/conan/${package_user}/${package_repo}
-  script:
+    - java -version
     - sh ./build_android.sh
   after_script:
     - cd build_android
@@ -46,12 +40,10 @@ ios-sim:
 linux:
   image: registry.gitlab.com/ssrobins/docker-linux-build
   stage: build
-  before_script:
+  script:
     - lscpu
     - cat /proc/meminfo | grep MemTotal
-    - conan remote add ${package_repo} https://api.bintray.com/conan/${package_user}/${package_repo}
     - gcc --version
-  script:
     - sh ./build_linux.sh
   artifacts:
     paths:
