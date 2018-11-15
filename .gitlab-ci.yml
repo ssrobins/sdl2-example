@@ -42,20 +42,15 @@ ios-sim:
 linux:
   image: registry.gitlab.com/ssrobins/docker-linux-build
   stage: build
-  script:
-    # Environment
+  before_script:
     - lscpu
     - cat /proc/meminfo | grep MemTotal
-    # Build
-    - mkdir _build
-    - cd _build
     - conan remote add ${package_repo} https://api.bintray.com/conan/${package_user}/${package_repo}
-    - conan install ..
-    - cmake -DCMAKE_BUILD_TYPE=Release ..
-    - make package -j 4
+  script:
+    - sh ./build_linux.sh
   artifacts:
     paths:
-      - _build/_package/*.tar.gz
+      - build_linux/_package/*.tar.gz
 
 mac:
   stage: build
