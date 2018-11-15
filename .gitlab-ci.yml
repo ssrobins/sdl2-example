@@ -63,14 +63,10 @@ linux:
 mac:
   stage: build
   script:
-    - mkdir _build
-    - cd _build
-    - conan install ..
-    - cmake -G Xcode ..
-    - cmake --build . --config Release --target package
+    - sh ./build_ios_sim.sh
   artifacts:
     paths:
-      - _build/_package/*.zip
+      - build_mac/_package/*.zip
   tags:
     - mac
   allow_failure: true
