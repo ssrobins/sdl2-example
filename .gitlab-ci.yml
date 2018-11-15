@@ -63,7 +63,7 @@ linux:
 mac:
   stage: build
   script:
-    - sh ./build_ios_sim.sh
+    - sh ./build_mac.sh
   artifacts:
     paths:
       - build_mac/_package/*.zip
