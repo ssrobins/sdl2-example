@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.13.0)
 project(Rectangles)
 
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
-conan_basic_setup(TARGETS)
+conan_basic_setup(TARGETS NO_OUTPUT_DIRS)
 
 set(company dnqpy)
 
