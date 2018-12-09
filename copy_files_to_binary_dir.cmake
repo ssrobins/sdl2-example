@@ -6,29 +6,19 @@ install(TARGETS ${target_name} DESTINATION ${target_name} COMPONENT ${component_
 if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/assets)
     get_target_property(is_mac_bundle ${target_name} MACOSX_BUNDLE)
     if(APPLE)
-        if(CMAKE_GENERATOR STREQUAL Xcode)
-            set(config $(CONFIGURATION))
-        endif()
-
         if(${is_mac_bundle})
             if(IOS)
-                set(config ${config}$(EFFECTIVE_PLATFORM_NAME))
-                set(assets_dest_path ${CMAKE_CURRENT_BINARY_DIR}/${config}/${target_name}.app/assets)
+                set(assets_dest_dir assets)
             else()
-                set(assets_dest_path ${CMAKE_CURRENT_BINARY_DIR}/${config}/${target_name}.app/Contents/Resources/assets)
+                set(assets_dest_dir ../Resources/assets)
             endif()
         else()
-            set(assets_dest_path ${CMAKE_CURRENT_BINARY_DIR}/${config}/assets)
+            set(assets_dest_dir assets)
         endif()
     elseif(ANDROID)
-        set(assets_dest_path ${CMAKE_CURRENT_BINARY_DIR}/Android/app/src/main/assets/assets)
+        set(assets_dest_dir ${CMAKE_CURRENT_BINARY_DIR}/Android/app/src/main/assets/assets)
     else()
-        if(MSVC)
-            set(config $(Configuration))
-        endif()
-        set(assets_dest_path ${CMAKE_CURRENT_BINARY_DIR}/${config}/assets)
-
-        install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/assets DESTINATION ${target_name} COMPONENT ${component_name})
+        set(assets_dest_dir assets)
     endif()
 
     add_custom_command(
@@ -36,8 +26,12 @@ if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/assets)
         POST_BUILD
         COMMAND cmake -E copy_directory
             ${CMAKE_CURRENT_SOURCE_DIR}/assets
-            ${assets_dest_path}
+            $<TARGET_FILE_DIR:${target_name}>/${assets_dest_dir}
     )
+
+    if(NOT IOS AND NOT ${is_mac_bundle} AND NOT ANDROID)
+        install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/assets DESTINATION ${target_name} COMPONENT ${component_name})
+    endif()
 
     # Stage assets so Visual Studio will find them.
     # Not needed if an absolute path is used.
@@ -62,7 +56,7 @@ if(APPLE AND NOT IOS)
                 POST_BUILD
                 COMMAND cmake -E copy
                     ${CMAKE_CURRENT_SOURCE_DIR}/icon.icns
-                    ${CMAKE_CURRENT_BINARY_DIR}/${config}/${target_name}.app/Contents/Resources/icon.icns
+                    $<TARGET_FILE_DIR:${target_name}>/../Resources/icon.icns
             )
         endif()
     endif()
