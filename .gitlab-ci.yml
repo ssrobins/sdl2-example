@@ -27,7 +27,6 @@ ios:
     - sh ./build_ios.sh
   tags:
     - ios
-  allow_failure: true
 
 ios-sim:
   stage: build
@@ -35,7 +34,6 @@ ios-sim:
     - sh ./build_ios_sim.sh
   tags:
     - ios
-  allow_failure: true
 
 linux:
   image: registry.gitlab.com/ssrobins/docker-linux-build
@@ -58,7 +56,6 @@ mac:
       - build_mac/_package/*.zip
   tags:
     - mac
-  allow_failure: true
 
 windows:
   stage: build
@@ -69,4 +66,3 @@ windows:
       - build_windows/_package/*.zip
   tags:
     - windows
-  allow_failure: true
