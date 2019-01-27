@@ -1,6 +1,6 @@
 set(target_name Rectangles)
 
-include(${CMAKE_SOURCE_DIR}/add_executable.cmake)
+add_sdl2_executable(${target_name})
 
 target_sources(${target_name} PRIVATE
     rectangles.c
@@ -19,4 +19,4 @@ set_target_properties(${target_name}
     WIN32_EXECUTABLE TRUE
 )
 
-include(${CMAKE_SOURCE_DIR}/copy_files_to_binary_dir.cmake)
+install_executable(${target_name})
