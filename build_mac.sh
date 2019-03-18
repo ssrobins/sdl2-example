@@ -7,5 +7,7 @@ mkdir -p $build_dir
 cd $build_dir
 
 conan install ..
+
 cmake -G Xcode ..
+
 cmake --build . --config Release --target package
