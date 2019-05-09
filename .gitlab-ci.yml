@@ -1,1 +1,80 @@
-include: 'https://gitlab.com/ssrobins/ci/raw/master/cpp.yml'
+variables:
+  CONAN_USER_HOME: "$CI_PROJECT_DIR"
+
+stages:
+  - build
+
+before_script:
+  - cmake --version
+  - conan --version
+  - conan remote add conan https://api.bintray.com/conan/stever/conan
+
+.android:
+  image: registry.gitlab.com/ssrobins/docker-android-build:jdk8u212-ndk19c
+  stage: build
+  script:
+    - lscpu
+    - cat /proc/meminfo | grep MemTotal
+    - java -version
+    - sh ./build_$android_arch.sh
+    - cd build_$android_arch
+    - mkdir _package
+    - find . -name \*.apk -exec mv {} _package/ \;
+  artifacts:
+    paths:
+      - build_$android_arch/_package/*.apk
+  except:
+    variables:
+      - $desktop_only == "true"
+
+android-v7a:
+  variables:
+    android_arch: "android-v7a"
+  extends: .android
+
+android-v8a:
+  variables:
+    android_arch: "android-v8a"
+  extends: .android
+
+ios:
+  stage: build
+  script:
+    - sh ./build_ios.sh
+  tags:
+    - ios
+  except:
+    variables:
+      - $desktop_only == "true"
+
+linux:
+  image: registry.gitlab.com/ssrobins/docker-linux-build:gcc9.1.0
+  stage: build
+  script:
+    - lscpu
+    - cat /proc/meminfo | grep MemTotal
+    - gcc --version
+    - sh ./build_linux.sh
+  artifacts:
+    paths:
+      - build_linux/_package/*.tar.gz
+
+mac:
+  stage: build
+  script:
+    - sh ./build_mac.sh
+  artifacts:
+    paths:
+      - build_mac/_package/*.zip
+  tags:
+    - mac
+
+windows:
+  stage: build
+  script:
+    - call build_windows.bat
+  artifacts:
+    paths:
+      - build_windows/_package/*.zip
+  tags:
+    - windows
