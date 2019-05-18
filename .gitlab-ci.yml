@@ -16,7 +16,7 @@ before_script:
     - lscpu
     - cat /proc/meminfo | grep MemTotal
     - java -version
-    - sh ./build_$android_arch.sh
+    - ./build_$android_arch.sh
     - cd build_$android_arch
     - mkdir _package
     - find . -name \*.apk -exec mv {} _package/ \;
@@ -40,7 +40,7 @@ android-v8a:
 ios:
   stage: build
   script:
-    - sh ./build_ios.sh
+    - ./build_ios.sh
   tags:
     - ios
   except:
@@ -54,7 +54,7 @@ linux:
     - lscpu
     - cat /proc/meminfo | grep MemTotal
     - gcc --version
-    - sh ./build_linux.sh
+    - ./build_linux.sh
   artifacts:
     paths:
       - build_linux/_package/*.tar.gz
@@ -62,7 +62,7 @@ linux:
 mac:
   stage: build
   script:
-    - sh ./build_mac.sh
+    - ./build_mac.sh
   artifacts:
     paths:
       - build_mac/_package/*.zip
