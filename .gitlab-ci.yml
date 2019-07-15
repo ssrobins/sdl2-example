@@ -18,8 +18,6 @@ before_script:
     - java -version
     - ./build_$android_arch.sh
     - cd build_$android_arch
-    - mkdir _package
-    - find . -name \*.apk -exec mv {} _package/ \;
   artifacts:
     paths:
       - build_$android_arch/_package/*.apk
