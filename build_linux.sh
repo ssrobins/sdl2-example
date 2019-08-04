@@ -6,8 +6,14 @@ cd $(dirname "$0")
 mkdir -p $build_dir
 cd $build_dir
 
-conan install .. -s compiler.libcxx=libstdc++11
+config=Release
 
-cmake -DCMAKE_BUILD_TYPE=Release ..
+conan install --update .. -s compiler.libcxx=libstdc++11
 
-cmake --build . --target package -- -j 4
+cmake -DCMAKE_BUILD_TYPE=$config ..
+
+cmake --build . -- -j 4
+
+ctest -C $config --output-on-failure
+
+cpack

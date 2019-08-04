@@ -6,8 +6,14 @@ cd $(dirname "$0")
 mkdir -p $build_dir
 cd $build_dir
 
-conan install ..
+config=Release
+
+conan install --update ..
 
 cmake -G Xcode ..
 
-cmake --build . --config Release --target package
+cmake --build . --config $config
+
+ctest -C $config --output-on-failure
+
+cpack
