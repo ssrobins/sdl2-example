@@ -1,22 +1,20 @@
-set(target_name Rectangles)
+add_sdl2_executable(Rectangles)
 
-add_sdl2_executable(${target_name})
-
-target_sources(${target_name} PRIVATE
+target_sources(Rectangles PRIVATE
     rectangles.c
 )
 
-target_include_directories(${target_name} PRIVATE
+target_include_directories(Rectangles PRIVATE
 )
 
-target_link_libraries(${target_name}
+target_link_libraries(Rectangles
     CONAN_PKG::sdl2
 )
 
-set_target_properties(${target_name}
+set_target_properties(Rectangles
     PROPERTIES
     MACOSX_BUNDLE TRUE
     WIN32_EXECUTABLE TRUE
 )
 
-install_executable(${target_name})
+install_executable(Rectangles)
