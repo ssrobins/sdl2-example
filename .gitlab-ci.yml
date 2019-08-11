@@ -8,7 +8,6 @@ stages:
 before_script:
   - cmake --version
   - conan --version
-  - conan remote add conan https://api.bintray.com/conan/stever/conan
 
 .android:
   image: registry.gitlab.com/ssrobins/docker-android-build:jdk8u212b04-ndk20

@@ -6,9 +6,10 @@ cd $(dirname "$0")
 mkdir -p $build_dir
 cd $build_dir
 
-config=Release
-
+conan remote add bintray-stever https://api.bintray.com/conan/stever/conan --force
 conan install --update .. -s compiler.libcxx=libstdc++11
+
+config=Release
 
 cmake -DCMAKE_BUILD_TYPE=$config ..
 
