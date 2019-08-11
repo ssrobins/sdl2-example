@@ -8,6 +8,7 @@ if not exist %build_dir% mkdir %build_dir%
 cd %build_dir%
 
 conan remote add bintray-stever https://api.bintray.com/conan/stever/conan --insert --force || goto :error
+
 conan install --update .. -s arch=x86 -s compiler.version=16 -s compiler.runtime=MT || goto :error
 
 cmake -G "Visual Studio 16 2019" -A Win32 .. || goto :error
