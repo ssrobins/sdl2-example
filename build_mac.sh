@@ -6,7 +6,7 @@ cd $(dirname "$0")
 mkdir -p $build_dir
 cd $build_dir
 
-conan remote add bintray-stever https://api.bintray.com/conan/stever/conan --force
+conan remote add bintray-stever https://api.bintray.com/conan/stever/conan --insert --force
 conan install --update ..
 
 config=Release
