@@ -6,4 +6,7 @@ class Conan(ConanFile):
     generators = "cmake"
 
     def requirements(self):
-        self.requires.add("ssrobins_engine/0.1.0#bfdd7e61f2ae28bfee82720e4b9e9b39ff8da27d")
+        if self.settings.os == "Android":
+            self.requires.add("android_sdl2/0.1.0#f0c8143d56b20e306f788712298bb77778ef536d")
+        self.requires.add("cmake_utils/0.1.0#7f17deeced79eecd4a03ba2d327bee3e5e794732")
+        self.requires.add("sdl2/2.0.8#e429f599c8c7350ba1edb0e501cfb81c23df0e84")
