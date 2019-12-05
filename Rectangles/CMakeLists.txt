@@ -20,6 +20,10 @@ if(IOS)
     set_target_properties(Rectangles PROPERTIES
         RESOURCE "${icons}"
     )
+
+    target_assets(Rectangles
+        Rectangles.xcassets
+    )
 endif()
 
 target_include_directories(Rectangles PRIVATE
