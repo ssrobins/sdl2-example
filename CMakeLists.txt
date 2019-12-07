@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.14)
 
-project(Rectangles VERSION 0.1.0)
+project(Rectangles VERSION 0.1.11)
 
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 conan_basic_setup(TARGETS NO_OUTPUT_DIRS)
