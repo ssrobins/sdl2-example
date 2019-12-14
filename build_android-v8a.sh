@@ -16,6 +16,6 @@ config=Release
 
 cmake -G Ninja -DANDROID_PLATFORM=android-$android_min_sdk_version -DANDROID_ABI=arm64-v8a -DANDROID_TOOLCHAIN=clang -DANDROID_STL=c++_static -DCMAKE_TOOLCHAIN_FILE=$ANDROID_HOME/android-ndk-${android_ndk_version}/build/cmake/android.toolchain.cmake -DCMAKE_BUILD_TYPE=$config ..
 
-cmake --build .
+cmake --build . --verbose
 
 cpack -C $config

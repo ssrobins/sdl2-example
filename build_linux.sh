@@ -14,7 +14,7 @@ config=Release
 
 cmake -G Ninja -DCMAKE_BUILD_TYPE=$config ..
 
-cmake --build .
+cmake --build . --verbose
 
 ctest -C $config --output-on-failure
 
