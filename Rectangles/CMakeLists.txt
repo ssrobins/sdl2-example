@@ -34,6 +34,7 @@ target_link_libraries(Rectangles
 )
 
 set_target_properties(Rectangles PROPERTIES
+    LINKER_LANGUAGE CXX
     MACOSX_BUNDLE TRUE
     WIN32_EXECUTABLE TRUE
 )
