@@ -26,7 +26,7 @@ elseif(APPLE)
     set(xcode_version 12.0)
 endif()
 
-project(Rectangles VERSION 0.1.11)
+project(Rectangles VERSION 0.1.13)
 
 if(ANDROID)
     set(conan_args -s os=Android -s os.api_level=${android_min_sdk_version} -s arch=${android_arch} -s compiler=clang -s compiler.version=9 -s compiler.libcxx=libc++)
