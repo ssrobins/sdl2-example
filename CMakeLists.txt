@@ -29,7 +29,7 @@ endif()
 project(Rectangles VERSION 0.1.13)
 
 if(ANDROID)
-    set(conan_args -s os=Android -s os.api_level=${android_min_sdk_version} -s arch=${android_arch} -s compiler=clang -s compiler.version=9 -s compiler.libcxx=libc++)
+    set(conan_args -s os=Android -s os.api_level=${android_min_sdk_version} -s arch=${android_arch} -s compiler=clang -s compiler.version=11 -s compiler.libcxx=libc++)
 elseif(IOS)
     set(CMAKE_OSX_ARCHITECTURES "armv7 arm64")
     set(CMAKE_OSX_DEPLOYMENT_TARGET 8.0)
