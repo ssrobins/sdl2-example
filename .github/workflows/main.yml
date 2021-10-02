@@ -16,7 +16,6 @@ on:
 
 env:
   CONAN_REVISIONS_ENABLED: 1
-  CONAN_SYSREQUIRES_SUDO: 0
   app_name: Rectangles
 
 jobs:
@@ -31,29 +30,28 @@ jobs:
           - name: androidarm
             os: ubuntu-20.04
             container: ghcr.io/ssrobins/docker-android-build:jdk8u302-ndk23
-            build_script: ./cmake.py androidarm --build --package --config Release
+            build_script: ./cmake.py androidarm --build --package
             artifact_path: build_androidarm/_package/*.apk
           - name: androidarm64
             os: ubuntu-20.04
             container: ghcr.io/ssrobins/docker-android-build:jdk8u302-ndk23
-            build_script: ./cmake.py androidarm64 --build --package --config Release
+            build_script: ./cmake.py androidarm64 --build --package
             artifact_path: build_androidarm64/_package/*.apk
           - name: ios
             os: macos-10.15
-            build_script: ./cmake.py ios --build --package --config Release
+            build_script: ./cmake.py ios --build --package
             artifact_path: build_ios/_package/*.ipa
           - name: linux
-            os: ubuntu-20.04
-            container: ghcr.io/ssrobins/docker-linux-build:gcc11.1.0
-            build_script: ./cmake.py linux --build --test --package --config Release
+            os: ubuntu-18.04
+            build_script: ./cmake.py linux --build --test --package
             artifact_path: build_linux/_package/*.tar.gz
           - name: macos
             os: macos-10.15
-            build_script: ./cmake.py macos --build --test --package --config Release
+            build_script: ./cmake.py macos --build --test --package
             artifact_path: build_macos/_package/*.zip
           - name:  windows
             os: windows-2019
-            build_script: py cmake.py windows --build --test --package --config Release
+            build_script: py cmake.py windows --build --test --package
             artifact_path: build_windows/_package/*.zip
     steps:
       - uses: actions/checkout@v2
@@ -100,6 +98,10 @@ jobs:
           p12-file-base64: ${{ secrets.APPLE_CERTIFICATES }}
           p12-password: ${{ secrets.APPLE_CERTIFICATES_PASSWORD }}
 
+      - name: Install required Linux packages
+        if: matrix.name == 'linux'
+        run: sudo apt-get install ninja-build python3-setuptools -y
+
       - name: Install CMake
         uses: ssrobins/install-cmake@main
 
@@ -112,7 +114,7 @@ jobs:
           conan --version
 
       - name: Build
-        run:  ${{ matrix.build_script }}
+        run:  ${{ matrix.build_script }} --noConanPkgBuild --config Release
         env:
           DEVELOPER_DIR: /Applications/Xcode_12.4.app/Contents/Developer
 
