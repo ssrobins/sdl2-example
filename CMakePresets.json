@@ -7,11 +7,6 @@
     },
     "configurePresets": [
         {
-            "name": "default",
-            "hidden": true,
-            "cmakeExecutable": "cmake.exe"
-        },
-        {
             "name": "androidarm",
             "inherits": "default",
             "generator": "Ninja Multi-Config",
@@ -85,6 +80,11 @@
                 "lhs": "${hostSystemName}",
                 "rhs": "Windows"
             }
+        },
+        {
+            "name": "default",
+            "hidden": true,
+            "cmakeExecutable": "cmake"
         }
     ]
 }
