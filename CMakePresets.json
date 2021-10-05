@@ -13,6 +13,7 @@
         },
         {
             "name": "androidarm",
+            "displayName": "Android ARM",
             "inherits": "default",
             "generator": "Ninja Multi-Config",
             "binaryDir": "${sourceDir}/build_${presetName}",
@@ -25,6 +26,7 @@
         },
         {
             "name": "androidarm64",
+            "displayName": "Android ARM64",
             "inherits": "default",
             "generator": "Ninja Multi-Config",
             "binaryDir": "${sourceDir}/build_${presetName}",
@@ -37,6 +39,7 @@
         },
         {
             "name": "ios",
+            "displayName": "iOS",
             "inherits": "default",
             "generator": "Xcode",
             "binaryDir": "${sourceDir}/build_${presetName}",
@@ -54,6 +57,7 @@
         },
         {
             "name": "linux",
+            "displayName": "Linux",
             "inherits": "default",
             "generator": "Ninja Multi-Config",
             "binaryDir": "${sourceDir}/build_${presetName}",
@@ -65,6 +69,7 @@
         },
         {
             "name": "macos",
+            "displayName": "macOS",
             "inherits": "default",
             "generator": "Xcode",
             "binaryDir": "${sourceDir}/build_${presetName}",
@@ -76,6 +81,7 @@
         },
         {
             "name": "windows",
+            "displayName": "Windows",
             "inherits": "default",
             "generator": "Visual Studio 16 2019",
             "architecture": "Win32",
@@ -85,6 +91,49 @@
                 "lhs": "${hostSystemName}",
                 "rhs": "Windows"
             }
+        }
+    ],
+    "buildPresets": [
+        {
+            "name": "default",
+            "hidden": true,
+            "verbose": true
+        },
+        {
+            "name": "Android ARM Debug",
+            "inherits": "default",
+            "configurePreset": "androidarm",
+            "configuration": "Debug"
+        },
+        {
+            "name": "Android ARM Release",
+            "inherits": "default",
+            "configurePreset": "androidarm",
+            "configuration": "Release"
+        },
+        {
+            "name": "Android ARM64 Debug",
+            "inherits": "default",
+            "configurePreset": "androidarm64",
+            "configuration": "Debug"
+        },
+        {
+            "name": "Android ARM64 Release",
+            "inherits": "default",
+            "configurePreset": "androidarm64",
+            "configuration": "Release"
+        },
+        {
+            "name": "Windows Debug",
+            "inherits": "default",
+            "configurePreset": "windows",
+            "configuration": "Debug"
+        },
+        {
+            "name": "Windows Release",
+            "inherits": "default",
+            "configurePreset": "windows",
+            "configuration": "Release"
         }
     ]
 }
