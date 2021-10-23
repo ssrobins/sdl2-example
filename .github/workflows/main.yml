@@ -102,10 +102,6 @@ jobs:
         if: contains(matrix.name, 'android') || matrix.name == 'linux'
         run: sudo apt-get install ninja-build python3-setuptools -y
 
-      - name: Check gradle
-        if: contains(matrix.name, 'android')
-        run: which gradle
-
       - name: Install CMake
         uses: ssrobins/install-cmake@main
 
