@@ -113,16 +113,10 @@ jobs:
           cmake --version
           conan --version
 
-      - name: Set Android NDK
-        if: contains(matrix.name, 'android')
-        run: |
-          ls -l /usr/local/lib/android/sdk/ndk-bundle
-          sudo ln -sfn /usr/local/lib/android/sdk/ndk-bundle $ANDROID_NDK_LATEST_HOME
-          ls -l /usr/local/lib/android/sdk/ndk-bundle
-
       - name: Build
         run:  ${{ matrix.build_script }} --config Release
         env:
+          ANDROID_NDK_ROOT: /usr/local/lib/android/sdk/ndk/23.0.7599858
           DEVELOPER_DIR: /Applications/Xcode_13.0.app/Contents/Developer
 
       - uses: actions/upload-artifact@v2
