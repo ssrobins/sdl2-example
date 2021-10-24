@@ -115,7 +115,10 @@ jobs:
 
       - name: Set Android NDK
         if: contains(matrix.name, 'android')
-        run: ln -sfn /usr/local/lib/android/sdk/ndk-bundle $ANDROID_NDK_LATEST_HOME
+        run: |
+          ls -l /usr/local/lib/android/sdk/ndk-bundle
+          ln -sfn /usr/local/lib/android/sdk/ndk-bundle $ANDROID_NDK_LATEST_HOME
+          ls -l /usr/local/lib/android/sdk/ndk-bundle
 
       - name: Build
         run:  ${{ matrix.build_script }} --config Release
