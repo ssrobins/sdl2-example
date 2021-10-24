@@ -11,13 +11,6 @@ if(ANDROID_ABI)
     if(NOT EXISTS $ENV{ANDROID_SDK_ROOT})
         message(FATAL_ERROR "Environment variable ANDROID_SDK_ROOT needs to point to a valid Android SDK installation")
     endif()
-
-    find_program(GRADLE_PATH gradle)
-    if(GRADLE_PATH)
-        message(STATUS "%%%%%%%%%%%%%% Gradle was found at: ${GRADLE_PATH}")
-    else()
-        message(STATUS "%%%%%%%%%%%%%% Gradle not found")
-    endif()
 endif()
 
 if(ANDROID_ABI STREQUAL armeabi-v7a)
