@@ -116,7 +116,7 @@ jobs:
       - name: Build
         run:  ${{ matrix.build_script }} --config Release
         env:
-          ANDROID_NDK_ROOT: /usr/local/lib/android/sdk/ndk/23.0.7599858
+          ANDROID_NDK_ROOT: $ANDROID_NDK_LATEST_HOME
           DEVELOPER_DIR: /Applications/Xcode_13.0.app/Contents/Developer
 
       - uses: actions/upload-artifact@v2
