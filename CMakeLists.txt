@@ -25,7 +25,7 @@ elseif(ANDROID_ABI STREQUAL arm64-v8a)
     set(android_arch armv8)
 endif()
 
-project(Rectangles VERSION 0.1.13)
+project(Rectangles VERSION 0.1.16)
 
 if(MSVC)
     string(REGEX MATCH "[0-9]+" compiler_version ${CMAKE_GENERATOR})
