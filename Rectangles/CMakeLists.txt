@@ -4,7 +4,7 @@ target_sources(Rectangles PRIVATE
     rectangles.c
 )
 
-if(IOS)
+if(APPLE)
     target_assets(Rectangles
         Rectangles.xcassets
     )
