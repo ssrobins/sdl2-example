@@ -68,19 +68,25 @@ else()
     message("Unhandled platform, Conan install command may fail")
 endif()
 
-option(CONAN_BUILD_MISSING_PKGS "Build missing Conan packages" ON)
-if(CONAN_BUILD_MISSING_PKGS)
-    set(conan_build_option --build=missing)
+if(NOT EXISTS "${CMAKE_BINARY_DIR}/conan.cmake")
+  message(STATUS "Downloading conan.cmake from https://github.com/conan-io/cmake-conan")
+  file(DOWNLOAD "https://raw.githubusercontent.com/conan-io/cmake-conan/0.18.1/conan.cmake"
+                "${CMAKE_BINARY_DIR}/conan.cmake"
+                TLS_VERIFY ON)
 endif()
 
-execute_process(
-    COMMAND conan remote add artifactory-ssrobins https://ssrobins.jfrog.io/artifactory/api/conan/conan --insert --force
-    COMMAND conan install --install-folder ${CMAKE_BINARY_DIR} --update ${CMAKE_SOURCE_DIR} ${conan_build_option} ${conan_args}
-    RESULT_VARIABLE conan_result
-)
-if(conan_result)
-    message(FATAL_ERROR "Conan error")
-endif()
+include(${CMAKE_BINARY_DIR}/conan.cmake)
+
+conan_cmake_configure(REQUIRES sdl/2.0.20 cmake_utils/6.1.0
+                      GENERATORS cmake)
+
+foreach(TYPE ${CMAKE_CONFIGURATION_TYPES})
+    conan_cmake_autodetect(settings BUILD_TYPE ${TYPE})
+    conan_cmake_install(PATH_OR_REFERENCE .
+                        BUILD missing
+                        REMOTE conancenter
+                        SETTINGS ${settings})
+endforeach()
 
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 conan_basic_setup(TARGETS NO_OUTPUT_DIRS)
