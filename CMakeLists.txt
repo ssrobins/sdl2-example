@@ -99,8 +99,7 @@ endforeach()
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 conan_basic_setup(TARGETS NO_OUTPUT_DIRS)
 
-list(APPEND CMAKE_MODULE_PATH ${CMAKE_BINARY_DIR})
-list(APPEND CMAKE_PREFIX_PATH ${CMAKE_BINARY_DIR})
+set(CMAKE_FIND_ROOT_PATH ${CMAKE_BINARY_DIR})
 find_package(sdl2 REQUIRED)
 
 include(${CONAN_CMAKE_UTILS_ROOT}/global_settings.cmake)
