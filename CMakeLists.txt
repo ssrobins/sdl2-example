@@ -100,7 +100,6 @@ include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 conan_basic_setup(TARGETS NO_OUTPUT_DIRS)
 
 set(CMAKE_FIND_ROOT_PATH ${CMAKE_BINARY_DIR})
-find_package(cmake_utils REQUIRED)
 find_package(sdl2 REQUIRED)
 
 include(${CONAN_CMAKE_UTILS_ROOT}/global_settings.cmake)
