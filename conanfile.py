@@ -2,7 +2,7 @@ from conans import ConanFile
 
 class Conan(ConanFile):
     settings = "os", "arch", "compiler", "build_type"
-    generators = "cmake", "cmake_find_package_multi"
+    generators = "cmake", "CMakeDeps"
 
     def build_requirements(self):
         if self.settings.os == "Android":
