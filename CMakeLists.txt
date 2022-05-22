@@ -68,6 +68,9 @@ else()
     message("Unhandled platform, Conan install command may fail")
 endif()
 
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_BINARY_DIR})
+list(APPEND CMAKE_PREFIX_PATH ${CMAKE_BINARY_DIR})
+
 if(NOT EXISTS "${CMAKE_BINARY_DIR}/conan.cmake")
     message(STATUS "Downloading conan.cmake from https://github.com/conan-io/cmake-conan")
     file(DOWNLOAD
@@ -96,11 +99,10 @@ foreach(TYPE ${CMAKE_CONFIGURATION_TYPES})
         SETTINGS ${conan_args};build_type=${TYPE})
 endforeach()
 
+find_package(sdl2 REQUIRED)
+
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 conan_basic_setup(TARGETS NO_OUTPUT_DIRS)
-
-set(CMAKE_FIND_ROOT_PATH ${CMAKE_BINARY_DIR})
-find_package(sdl2 REQUIRED)
 
 include(${CONAN_CMAKE_UTILS_ROOT}/global_settings.cmake)
 
