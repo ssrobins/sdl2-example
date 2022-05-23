@@ -26,7 +26,7 @@ elseif(ANDROID_ABI STREQUAL arm64-v8a)
     set(android_arch armv8)
 endif()
 
-project(Rectangles VERSION 0.1.25)
+project(Rectangles VERSION 0.1.26)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -88,10 +88,19 @@ conan_add_remote(NAME artifactory-ssrobins
     URL https://ssrobins.jfrog.io/artifactory/api/conan/conan
     VERIFY_SSL True)
 
-conan_cmake_install(PATH_OR_REFERENCE ${CMAKE_SOURCE_DIR}
-    BUILD ${conan_build_option}
-    UPDATE
-    SETTINGS ${conan_args})
+set(CMAKE_CONFIGURATION_TYPES "Debug;Release")
+foreach(TYPE ${CMAKE_CONFIGURATION_TYPES})
+    conan_cmake_install(PATH_OR_REFERENCE ${CMAKE_SOURCE_DIR}
+        BUILD ${conan_build_option}
+        UPDATE
+        SETTINGS ${conan_args};build_type=${TYPE})
+endforeach()
+
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_BINARY_DIR})
+list(APPEND CMAKE_PREFIX_PATH ${CMAKE_BINARY_DIR})
+set(CMAKE_FIND_ROOT_PATH ${CMAKE_BINARY_DIR})
+
+find_package(sdl2 REQUIRED)
 
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 conan_basic_setup(TARGETS NO_OUTPUT_DIRS)

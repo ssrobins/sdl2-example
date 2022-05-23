@@ -14,7 +14,7 @@ target_include_directories(Rectangles PRIVATE
 )
 
 target_link_libraries(Rectangles
-    CONAN_PKG::sdl2
+    sdl2::sdl2
 )
 
 set_target_properties(Rectangles PROPERTIES
