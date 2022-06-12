@@ -1,4 +1,4 @@
-add_sdl2_executable(Rectangles MACOSX_BUNDLE WIN32)
+add_sdl_executable(Rectangles MACOSX_BUNDLE WIN32)
 
 target_sources(Rectangles PRIVATE
     rectangles.c
@@ -14,7 +14,7 @@ target_include_directories(Rectangles PRIVATE
 )
 
 target_link_libraries(Rectangles
-    sdl2::sdl2
+    sdl::sdl
 )
 
 set_target_properties(Rectangles PROPERTIES
