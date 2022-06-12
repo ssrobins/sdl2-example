@@ -102,15 +102,16 @@ endforeach()
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_BINARY_DIR})
 list(APPEND CMAKE_PREFIX_PATH ${CMAKE_BINARY_DIR})
 set(CMAKE_FIND_ROOT_PATH ${CMAKE_BINARY_DIR})
+set(CMAKE_FIND_PACKAGE_PREFER_CONFIG TRUE)
 
 find_package(cmake_utils REQUIRED)
-find_package(sdl2 REQUIRED)
+find_package(sdl REQUIRED)
 
 include(${cmake_utils_PACKAGE_FOLDER_RELEASE}/global_settings.cmake)
 
 # Helper functions
 include(${cmake_utils_PACKAGE_FOLDER_RELEASE}/add_executable_custom.cmake)
-include(${cmake_utils_PACKAGE_FOLDER_RELEASE}/add_sdl2_executable.cmake)
+include(${cmake_utils_PACKAGE_FOLDER_RELEASE}/add_sdl_executable.cmake)
 include(${cmake_utils_PACKAGE_FOLDER_RELEASE}/install_executable.cmake)
 include(${cmake_utils_PACKAGE_FOLDER_RELEASE}/target_assets.cmake)
 
