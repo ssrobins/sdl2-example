@@ -125,7 +125,7 @@ set(CMAKE_FIND_PACKAGE_PREFER_CONFIG TRUE)
 set(CMAKE_FIND_ROOT_PATH ${CMAKE_BINARY_DIR})
 
 find_package(cmake_utils REQUIRED)
-find_package(sdl REQUIRED)
+find_package(SDL2 REQUIRED)
 
 include(${cmake_utils_PACKAGE_FOLDER_RELEASE}/global_settings.cmake)
 
