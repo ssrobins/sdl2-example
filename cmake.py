@@ -34,7 +34,9 @@ def main():
     if command_args.noConanPkgBuild:
         conan_build_option = " -DCONAN_BUILD_MISSING_PKGS=OFF"
 
-    cmake_cmd = f"cmake --preset={command_args.platform}{conan_build_option}"
+    build_dir = f"build_{command_args.platform}"
+
+    cmake_cmd = f"cmake --preset={command_args.platform}{conan_build_option} -B {build_dir}"
     print(cmake_cmd, flush=True)
     subprocess.run(cmake_cmd, cwd=script_path, shell=True, check=True)
 
@@ -49,20 +51,19 @@ def main():
             command_args.build = True
 
     if command_args.build:
-        cmake_build_cmd = f"cmake --build build_{command_args.platform} --config {config} --verbose"
+        cmake_build_cmd = f"cmake --build {build_dir} --config {config} --verbose"
         print(cmake_build_cmd, flush=True)
         subprocess.run(cmake_build_cmd, cwd=script_path, shell=True, check=True)
 
     if command_args.test:
         ctest_cmd = f"ctest -C {config} --output-on-failure"
         print(ctest_cmd, flush=True)
-        subprocess.run(ctest_cmd, cwd=os.path.join(script_path,
-            f"build_{command_args.platform}"), shell=True, check=True)
+        subprocess.run(ctest_cmd, cwd=os.path.join(script_path, build_dir), shell=True, check=True)
 
     if command_args.package:
         cpack_cmd = f"cpack -C {config}"
         print(cpack_cmd, flush=True)
-        subprocess.run(cpack_cmd, cwd=os.path.join(script_path, f"build_{command_args.platform}"), shell=True, check=True)
+        subprocess.run(cpack_cmd, cwd=os.path.join(script_path, build_dir), shell=True, check=True)
 
 
 if __name__ == "__main__":
