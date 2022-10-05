@@ -75,6 +75,8 @@ else()
     message("Unhandled platform, Conan install command may fail")
 endif()
 
+message(STATUS "!!!!!!compiler_version: ${compiler_version}")
+
 execute_process(
     COMMAND conan --version
     ERROR_QUIET

@@ -120,7 +120,9 @@ jobs:
 
       - name: Set Xcode version
         if: matrix.name == 'ios' || matrix.name == 'macos'
-        run: sudo xcode-select --switch /Applications/Xcode_13.4.1.app/Contents/Developer
+        run: |
+          sudo xcode-select --switch /Applications/Xcode_13.4.1.app/Contents/Developer
+          xcodebuild -version
 
       - name: Build
         run:  ${{ matrix.build_script }} --noConanPkgBuild --config Release
