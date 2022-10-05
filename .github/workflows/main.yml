@@ -118,10 +118,12 @@ jobs:
         if: contains(matrix.name, 'android')
         run: echo "ANDROID_NDK_ROOT=$ANDROID_HOME/ndk/23.2.8568313" >> $GITHUB_ENV
 
+      - name: Set Xcode version
+        if: matrix.name == 'ios' || matrix.name == 'macos'
+        run: sudo xcode-select --switch /Applications/Xcode_13.4.1.app/Contents/Developer
+
       - name: Build
         run:  ${{ matrix.build_script }} --noConanPkgBuild --config Release
-        env:
-          DEVELOPER_DIR: /Applications/Xcode_13.4.1.app/Contents/Developer
 
       - uses: actions/upload-artifact@v2
         with:
