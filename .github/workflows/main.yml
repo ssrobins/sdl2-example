@@ -51,7 +51,7 @@ jobs:
             build_script: py cmake.py windows --build --test --package
             artifact_path: build_windows/_package/*.zip
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Print environment variables
         run: env
@@ -129,7 +129,7 @@ jobs:
       - name: Build
         run:  ${{ matrix.build_script }} --noConanPkgBuild --config Release
 
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: ${{ env.app_name }}_artifact${{ github.run_number }}
           path: ${{ matrix.artifact_path }}
