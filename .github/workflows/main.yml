@@ -122,19 +122,11 @@ jobs:
           cmake --version
           conan --version
 
-      - name: Configure
-        run: cmake --preset=${{ matrix.name }} -D CONAN_BUILD_MISSING_PKGS=OFF
+      - name: Build Debug
+        run: cmake --workflow --preset=${{ matrix.name }}Debug
 
-      - name: Build
-        if: matrix.name != 'ios'
-        run: |
-          cmake --build --preset=${{ matrix.name }}Debug
-          cmake --build --preset=${{ matrix.name }}Release
-
-      - name: Package
-        run: |
-          cpack --preset=${{ matrix.name }}Debug
-          cpack --preset=${{ matrix.name }}Release
+      - name: Build Release
+        run: cmake --workflow --preset=${{ matrix.name }}Release
 
       - uses: actions/upload-artifact@v3
         with:
