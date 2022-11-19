@@ -126,6 +126,7 @@ jobs:
         run: cmake --preset=${{ matrix.name }} -D CONAN_BUILD_MISSING_PKGS=OFF
 
       - name: Build
+        if: matrix.name != 'ios'
         run: |
           cmake --build --preset=${{ matrix.name }}Debug
           cmake --build --preset=${{ matrix.name }}Release
