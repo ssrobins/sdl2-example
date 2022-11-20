@@ -28,28 +28,16 @@ jobs:
         include:
           - name: androidarm
             os: ubuntu-20.04
-            build_script: ./cmake.py androidarm --build --package
-            artifact_path: build_androidarm/_package/*.apk
           - name: androidarm64
             os: ubuntu-20.04
-            build_script: ./cmake.py androidarm64 --build --package
-            artifact_path: build_androidarm64/_package/*.apk
           - name: ios
             os: macos-12
-            build_script: ./cmake.py ios --build --package
-            artifact_path: build_ios/_package/*.ipa
           - name: linux
             os: ubuntu-18.04
-            build_script: ./cmake.py linux --build --test --package
-            artifact_path: build_linux/_package/*.tar.gz
           - name: macos
             os: macos-12
-            build_script: ./cmake.py macos --build --test --package
-            artifact_path: build_macos/_package/*.zip
           - name:  windows
             os: windows-2022
-            build_script: py cmake.py windows --build --test --package
-            artifact_path: build_windows/_package/*.zip
     steps:
       - uses: actions/checkout@v3
 
@@ -128,13 +116,26 @@ jobs:
           cmake --version
           conan --version
 
+      - name: Configure
+        run: cmake --preset=${{ matrix.name }} -D CONAN_BUILD_MISSING_PKGS=OFF
+
       - name: Build
-        run:  ${{ matrix.build_script }} --noConanPkgBuild --config Release
+        if: matrix.name != 'ios'
+        run: |
+          cmake --build --preset=${{ matrix.name }}Debug
+          cmake --build --preset=${{ matrix.name }}Release
+
+      - name: Package
+        run: |
+          cpack --preset=${{ matrix.name }}Debug
+          cpack --preset=${{ matrix.name }}Release
 
       - uses: actions/upload-artifact@v3
         with:
           name: ${{ env.app_name }}_artifact${{ github.run_number }}
-          path: ${{ matrix.artifact_path }}
+          path: |
+            build_${{ matrix.name }}/_package/*.*
+            !build_${{ matrix.name }}/_package/*.json
           if-no-files-found: error
 
       - name: 'Publish to App Store'
