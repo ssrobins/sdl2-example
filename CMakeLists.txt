@@ -140,6 +140,8 @@ find_package(SDL2 REQUIRED)
 
 include(${cmake_utils_PACKAGE_FOLDER_RELEASE}/global_settings.cmake)
 
+set(CPACK_PACKAGE_DIRECTORY ${PROJECT_BINARY_DIR}/_package/\${CPACK_BUILD_CONFIG})
+
 # Helper functions
 include(${cmake_utils_PACKAGE_FOLDER_RELEASE}/add_executable_custom.cmake)
 include(${cmake_utils_PACKAGE_FOLDER_RELEASE}/add_sdl_executable.cmake)
