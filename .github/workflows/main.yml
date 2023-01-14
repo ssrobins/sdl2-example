@@ -113,7 +113,7 @@ jobs:
           conan --version
 
       - name: Configure
-        run: cmake --preset=${{ matrix.name }} -D CONAN_BUILD_MISSING_PKGS=OFF
+        run: cmake --preset=${{ matrix.name }} -D CONAN_BUILD_MISSING_PKGS=OFF -D CONAN_UPDATE=ON
 
       - name: Build
         if: matrix.name != 'ios'
