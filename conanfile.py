@@ -8,6 +8,6 @@ class Conan(ConanFile):
 
     def requirements(self):
         if self.settings.os == "Android":
-            self.requires("android_sdl/2.7.2@ssrobins")
+            self.requires("android_sdl/2.7.3@ssrobins")
         self.requires("cmake_utils/12.0.1@ssrobins")
-        self.requires("sdl/2.26.2@ssrobins")
+        self.requires("sdl/2.26.3@ssrobins")
