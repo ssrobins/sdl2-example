@@ -25,37 +25,13 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - name: androidarm
-            os: ubuntu-20.04
-          - name: androidarm64
-            os: ubuntu-20.04
           - name: ios
             os: macos-12
-          - name: linux
-            os: ubuntu-18.04
-          - name: macos
-            os: macos-12
-          - name:  windows
-            os: windows-2022
     steps:
       - uses: actions/checkout@v3
 
       - name: Print environment variables
         run: env
-
-      - name: Install Android key store
-        if: contains(matrix.name, 'android')
-        run: |
-          key_store_path=$HOME/android.jks
-          gradle_config_dir=$HOME/.gradle
-          gradle_properties=$gradle_config_dir/gradle.properties
-          echo "GRADLE_USER_HOME=$gradle_config_dir" >> $GITHUB_ENV
-          echo "${{ secrets.ANDROID_KEY_STORE }}" | base64 --decode > $key_store_path
-          mkdir $gradle_config_dir
-          echo ANDROID_KEY_STORE_PATH=$key_store_path >> $gradle_properties
-          echo ANDROID_KEY_STORE_PASSWORD=${{ secrets.ANDROID_KEY_STORE_PASSWORD }} >> $gradle_properties
-          echo ANDROID_KEY_ALIAS=androidUploadKey >> $gradle_properties
-          echo ANDROID_KEY_PASSWORD=${{ secrets.ANDROID_KEY_PASSWORD }} >> $gradle_properties
 
       - name: 'Download development provisioning profile'
         if: matrix.name == 'ios'
@@ -66,73 +42,3 @@ jobs:
           issuer-id: ${{ secrets.APPSTORE_ISSUER_ID }}
           api-key-id: ${{ secrets.APPSTORE_KEY_ID }}
           api-private-key: ${{ secrets.APPSTORE_PRIVATE_KEY }}
-
-      - name: 'Download App Store provisioning profile'
-        if: matrix.name == 'ios'
-        uses: apple-actions/download-provisioning-profiles@v2
-        with:
-          bundle-id: 'com.dnqpy.${{ env.app_name }}'
-          profile-type: 'IOS_APP_STORE'
-          issuer-id: ${{ secrets.APPSTORE_ISSUER_ID }}
-          api-key-id: ${{ secrets.APPSTORE_KEY_ID }}
-          api-private-key: ${{ secrets.APPSTORE_PRIVATE_KEY }}
-
-      - name: Import Code-Signing Certificates
-        if: matrix.name == 'ios' || matrix.name == 'macos'
-        uses: apple-actions/import-codesign-certs@v2
-        with:
-          p12-file-base64: ${{ secrets.APPLE_CERTIFICATES }}
-          p12-password: ${{ secrets.APPLE_CERTIFICATES_PASSWORD }}
-
-      - name: Set Android NDK
-        if: contains(matrix.name, 'android')
-        run: echo "ANDROID_NDK_ROOT=$ANDROID_HOME/ndk/23.2.8568313" >> $GITHUB_ENV
-
-      - name: Set Xcode version
-        if: matrix.name == 'ios' || matrix.name == 'macos'
-        run: sudo xcode-select --switch /Applications/Xcode_13.4.1.app/Contents/Developer
-
-      - name: Install required Linux packages
-        if: contains(matrix.name, 'android') || matrix.name == 'linux'
-        run: sudo apt-get install ninja-build python3-setuptools -y
-
-      - name: Install CMake
-        uses: ssrobins/install-cmake@main
-        with:
-          release-candidate: true
-
-      - name: Install Conan
-        run: |
-          pip3 install conan --pre --upgrade
-          conan profile detect
-
-      - name: Print versions
-        run: |
-          cmake --version
-          conan --version
-
-      - name: Configure
-        run: cmake --preset=${{ matrix.name }} -D CONAN_BUILD_MISSING_PKGS=OFF -D CONAN_UPDATE=ON
-
-      - name: Build
-        if: matrix.name != 'ios'
-        run: |
-          cmake --build --preset=${{ matrix.name }}Debug
-          cmake --build --preset=${{ matrix.name }}Release
-
-      - name: Package
-        run: |
-          cpack --preset=${{ matrix.name }}Debug
-          cpack --preset=${{ matrix.name }}Release
-
-      - uses: actions/upload-artifact@v3
-        with:
-          name: ${{ env.app_name }}_artifact${{ github.run_number }}
-          path: |
-            build_${{ matrix.name }}/_package/Release/*.*
-            !build_${{ matrix.name }}/_package/Release/*.json
-          if-no-files-found: error
-
-      - name: 'Publish to App Store'
-        if: matrix.name == 'ios' && github.event.inputs.publish == 'true'
-        run: xcrun altool --upload-app --file $(find . -name *.ipa | head -n 1) --type ios --username ssrobins@gmail.com --password ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
