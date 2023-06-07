@@ -104,8 +104,8 @@ if(CONAN_UPDATE)
     set(conan_update_option --update)
 endif()
 
-set(conan_remote_name artifactory-ssrobins)
-set(conan_remote_url https://ssrobins.jfrog.io/artifactory/api/conan/conan)
+set(conan_remote_name conancenter)
+set(conan_remote_url https://center.conan.io)
 execute_process(
     COMMAND ${conan_path} remote update ${conan_remote_name} --url ${conan_remote_url}
     COMMAND_ECHO STDOUT
@@ -135,21 +135,20 @@ foreach(TYPE ${CMAKE_CONFIGURATION_TYPES})
     endif()
 endforeach()
 
-list(APPEND CMAKE_MODULE_PATH ${CMAKE_BINARY_DIR})
-list(APPEND CMAKE_PREFIX_PATH ${CMAKE_BINARY_DIR})
+list(PREPEND CMAKE_MODULE_PATH ${CMAKE_BINARY_DIR})
+list(PREPEND CMAKE_PREFIX_PATH ${CMAKE_BINARY_DIR})
 set(CMAKE_FIND_PACKAGE_PREFER_CONFIG TRUE)
 set(CMAKE_FIND_ROOT_PATH ${CMAKE_BINARY_DIR})
 
-find_package(cmake_utils REQUIRED)
 find_package(SDL2 REQUIRED)
 
-include(${cmake_utils_PACKAGE_FOLDER_RELEASE}/global_settings.cmake)
+include(cmake/global_settings.cmake)
 
 # Helper functions
-include(${cmake_utils_PACKAGE_FOLDER_RELEASE}/add_executable_custom.cmake)
-include(${cmake_utils_PACKAGE_FOLDER_RELEASE}/add_sdl_executable.cmake)
-include(${cmake_utils_PACKAGE_FOLDER_RELEASE}/install_executable.cmake)
-include(${cmake_utils_PACKAGE_FOLDER_RELEASE}/target_assets.cmake)
+include(cmake/add_executable_custom.cmake)
+include(cmake/add_sdl_executable.cmake)
+include(cmake/install_executable.cmake)
+include(cmake/target_assets.cmake)
 
 enable_testing()
 

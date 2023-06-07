@@ -40,6 +40,12 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: Cache Conan packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.conan2/p
+          key: conan-${{ runner.name }}-${{ hashFiles('conanfile.py') }}
+
       - name: Print environment variables
         run: env
 
@@ -112,7 +118,7 @@ jobs:
           conan --version
 
       - name: Configure
-        run: cmake --preset=${{ matrix.name }} -D CONAN_BUILD_MISSING_PKGS=OFF -D CONAN_UPDATE=ON
+        run: cmake --preset=${{ matrix.name }} -D CONAN_UPDATE=ON
 
       - name: Build
         if: matrix.name != 'ios'
