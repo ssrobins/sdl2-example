@@ -99,7 +99,7 @@ jobs:
       - name: Install CMake
         uses: ssrobins/install-cmake@main
         with:
-          release-candidate: true
+          release-candidate: false
 
       - name: Install Conan
         run: |
