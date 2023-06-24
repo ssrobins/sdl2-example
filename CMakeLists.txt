@@ -27,7 +27,9 @@ elseif(ANDROID_ABI STREQUAL arm64-v8a)
     set(android_arch armv8)
 endif()
 
-set(CMAKE_OSX_DEPLOYMENT_TARGET 9.0)
+if(CMAKE_SYSTEM_NAME MATCHES iOS)
+    set(CMAKE_OSX_DEPLOYMENT_TARGET 9.0)
+endif()
 
 project(Rectangles VERSION 0.1.28)
 
@@ -57,7 +59,6 @@ elseif(IOS)
     else()
         set(conan_arch ${CMAKE_OSX_ARCHITECTURES})
     endif()
-    set(CMAKE_OSX_DEPLOYMENT_TARGET 9.0)
     set(conan_args -s os=iOS -s arch=${conan_arch} -s os.sdk=iphoneos -s os.version=${CMAKE_OSX_DEPLOYMENT_TARGET} -s compiler=apple-clang -s compiler.libcxx=libc++ -s compiler.version=${compiler_version} -s compiler.cppstd=${CMAKE_CXX_STANDARD})
     set(bluetooth_statement "App uses the SDL2 library, which supports Bluetooth controllers, but it's not currently used. No data is being collected!")
 elseif(APPLE)
