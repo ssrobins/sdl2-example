@@ -15,6 +15,7 @@ target_include_directories(Rectangles PRIVATE
 
 target_link_libraries(Rectangles
     SDL2::SDL2-static
+    SDL2::SDL2main
 )
 
 set_target_properties(Rectangles PROPERTIES
