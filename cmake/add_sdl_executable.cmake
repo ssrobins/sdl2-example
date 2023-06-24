@@ -1,6 +1,5 @@
 if(ANDROID)
-    find_package(android_sdl REQUIRED)
-    set(package_root_path ${android_sdl_PACKAGE_FOLDER_RELEASE})
+    set(package_root_path ${CMAKE_SOURCE_DIR})
 endif()
 
 function(add_sdl_executable target_name)
@@ -14,7 +13,7 @@ function(add_sdl_executable target_name)
         # Stage copy of gradle project for Android build and SDL's Java files
         execute_process(
             COMMAND ${CMAKE_COMMAND} -E copy_directory
-                ${package_root_path}/Android
+                ${package_root_path}/android
                 ${androidstudio_path}
             COMMAND ${CMAKE_COMMAND} -E copy_directory
                 ${sdl_PACKAGE_FOLDER_RELEASE}/android
@@ -23,14 +22,14 @@ function(add_sdl_executable target_name)
 
         # Process files so they include target-specific properties
         configure_file (
-            ${package_root_path}/Android/app/src/main/AndroidManifest.xml
+            ${package_root_path}/android/app/src/main/AndroidManifest.xml
             ${androidstudio_path}/app/src/main/AndroidManifest.xml
         )
         if(NOT android_sdk_version)
             message(FATAL_ERROR "Set android_sdk_version CMake variable to the desired target SDK version")
         endif()
         configure_file (
-            ${package_root_path}/Android/app/build.gradle
+            ${package_root_path}/android/app/build.gradle
             ${androidstudio_path}/app/build.gradle
         )
         string(REGEX REPLACE "\\\\" "/" ANDROID_NDK_ROOT $ENV{ANDROID_NDK_ROOT})
@@ -38,15 +37,15 @@ function(add_sdl_executable target_name)
         get_filename_component(cmake_dir "${CMAKE_COMMAND}" DIRECTORY)
         get_filename_component(cmake_dir "${cmake_dir}" DIRECTORY)
         configure_file (
-            ${package_root_path}/Android/local.properties
+            ${package_root_path}/android/local.properties
             ${androidstudio_path}/local.properties
         )
         configure_file (
-            ${package_root_path}/Android/templates/MainActivity.java
+            ${package_root_path}/android/templates/MainActivity.java
             ${androidstudio_path}/app/src/main/java/com/${company}/${target_name}/MainActivity.java
         )
         configure_file (
-            ${package_root_path}/Android/app/src/main/res/values/strings.xml
+            ${package_root_path}/android/app/src/main/res/values/strings.xml
             ${androidstudio_path}/app/src/main/res/values/strings.xml
         )
 
