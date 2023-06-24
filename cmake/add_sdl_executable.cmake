@@ -15,9 +15,6 @@ function(add_sdl_executable target_name)
             COMMAND ${CMAKE_COMMAND} -E copy_directory
                 ${package_root_path}/android
                 ${androidstudio_path}
-            COMMAND ${CMAKE_COMMAND} -E copy_directory
-                ${sdl_PACKAGE_FOLDER_RELEASE}/android
-                ${androidstudio_path}/app/src/main/java/org/libsdl/app
         )
 
         # Process files so they include target-specific properties
