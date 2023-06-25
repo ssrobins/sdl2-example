@@ -27,10 +27,6 @@ elseif(ANDROID_ABI STREQUAL arm64-v8a)
     set(android_arch armv8)
 endif()
 
-if(CMAKE_SYSTEM_NAME MATCHES iOS)
-    set(CMAKE_OSX_DEPLOYMENT_TARGET 9.0)
-endif()
-
 project(Rectangles VERSION 0.1.28)
 
 set(CMAKE_CXX_STANDARD 17)
@@ -54,6 +50,7 @@ endif()
 if(ANDROID)
     set(conan_args -s os=Android -s os.api_level=${android_min_sdk_version} -s arch=${android_arch} -s compiler=clang -s compiler.version=${compiler_version} -s compiler.libcxx=c++_static -s compiler.cppstd=${CMAKE_CXX_STANDARD})
 elseif(IOS)
+    set(CMAKE_OSX_DEPLOYMENT_TARGET 11.0)
     if(CMAKE_OSX_ARCHITECTURES STREQUAL "arm64")
         set(conan_arch "armv8")
     else()
