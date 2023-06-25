@@ -121,7 +121,7 @@ jobs:
         run: cmake --preset=${{ matrix.name }} -D CONAN_UPDATE=ON
 
       - name: Build
-        if: "!matrix.name == 'ios'"
+        if: matrix.name != 'ios'
         run: |
           cmake --build --preset=${{ matrix.name }}Debug
           cmake --build --preset=${{ matrix.name }}Release
