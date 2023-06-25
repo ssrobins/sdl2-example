@@ -35,7 +35,7 @@
             }
         },
         {
-            "name": "iosarm",
+            "name": "ios",
             "inherits": "default",
             "generator": "Xcode",
             "condition": {
@@ -47,30 +47,6 @@
                 "CMAKE_SYSTEM_NAME": {
                     "type": "STRING",
                     "value": "iOS"
-                },
-                "CMAKE_OSX_ARCHITECTURES": {
-                    "type": "STRING",
-                    "value": "armv7"
-                }
-            }
-        },
-        {
-            "name": "iosarm64",
-            "inherits": "default",
-            "generator": "Xcode",
-            "condition": {
-                "type": "equals",
-                "lhs": "${hostSystemName}",
-                "rhs": "Darwin"
-            },
-            "cacheVariables": {
-                "CMAKE_SYSTEM_NAME": {
-                    "type": "STRING",
-                    "value": "iOS"
-                },
-                "CMAKE_OSX_ARCHITECTURES": {
-                    "type": "STRING",
-                    "value": "arm64"
                 }
             }
         },
@@ -138,27 +114,15 @@
             "configuration": "Release"
         },
         {
-            "name": "iosarmDebug",
+            "name": "iosDebug",
             "inherits": "default",
-            "configurePreset": "iosarm",
+            "configurePreset": "ios",
             "configuration": "Debug"
         },
         {
-            "name": "iosarm64Debug",
+            "name": "iosRelease",
             "inherits": "default",
-            "configurePreset": "iosarm64",
-            "configuration": "Debug"
-        },
-        {
-            "name": "iosarmRelease",
-            "inherits": "default",
-            "configurePreset": "iosarm",
-            "configuration": "Release"
-        },
-        {
-            "name": "iosarm64Release",
-            "inherits": "default",
-            "configurePreset": "iosarm64",
+            "configurePreset": "ios",
             "configuration": "Release"
         },
         {
@@ -220,23 +184,13 @@
             "configurations": ["Release"]
         },
         {
-            "name": "iosarmDebug",
-            "configurePreset": "iosarm",
+            "name": "iosDebug",
+            "configurePreset": "ios",
             "configurations": ["Debug"]
         },
         {
-            "name": "iosarm64Debug",
-            "configurePreset": "iosarm64",
-            "configurations": ["Debug"]
-        },
-        {
-            "name": "iosarmRelease",
-            "configurePreset": "iosarm",
-            "configurations": ["Release"]
-        },
-        {
-            "name": "iosarm64Release",
-            "configurePreset": "iosarm64",
+            "name": "iosRelease",
+            "configurePreset": "ios",
             "configurations": ["Release"]
         },
         {
@@ -340,54 +294,28 @@
             ]
         },
         {
-            "name": "iosarmDebug",
+            "name": "iosDebug",
             "steps": [
                 {
                     "type": "configure",
-                    "name": "iosarm"
+                    "name": "ios"
                 },
                 {
                     "type": "package",
-                    "name": "iosarmDebug"
+                    "name": "iosDebug"
                 }
             ]
         },
         {
-            "name": "iosarm64Debug",
+            "name": "iosRelease",
             "steps": [
                 {
                     "type": "configure",
-                    "name": "iosarm64"
+                    "name": "ios"
                 },
                 {
                     "type": "package",
-                    "name": "iosarm64Debug"
-                }
-            ]
-        },
-        {
-            "name": "iosarmRelease",
-            "steps": [
-                {
-                    "type": "configure",
-                    "name": "iosarm"
-                },
-                {
-                    "type": "package",
-                    "name": "iosarmRelease"
-                }
-            ]
-        },
-        {
-            "name": "iosarm64Release",
-            "steps": [
-                {
-                    "type": "configure",
-                    "name": "iosarm64"
-                },
-                {
-                    "type": "package",
-                    "name": "iosarm64Release"
+                    "name": "iosRelease"
                 }
             ]
         },

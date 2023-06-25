@@ -29,9 +29,7 @@ jobs:
             os: ubuntu-20.04
           - name: androidarm64
             os: ubuntu-20.04
-          - name: iosarm
-            os: macos-13
-          - name: iosarm64
+          - name: ios
             os: macos-13
           - name: linux
             os: ubuntu-20.04
@@ -66,7 +64,7 @@ jobs:
           echo ANDROID_KEY_PASSWORD=${{ secrets.ANDROID_KEY_PASSWORD }} >> $gradle_properties
 
       - name: 'Download development provisioning profile'
-        if: contains(matrix.name, 'ios')
+        if: matrix.name == 'ios'
         uses: apple-actions/download-provisioning-profiles@v2
         with:
           bundle-id: '*'
@@ -76,7 +74,7 @@ jobs:
           api-private-key: ${{ secrets.APPSTORE_PRIVATE_KEY }}
 
       - name: 'Download App Store provisioning profile'
-        if: contains(matrix.name, 'ios')
+        if: matrix.name == 'ios'
         uses: apple-actions/download-provisioning-profiles@v2
         with:
           bundle-id: 'com.dnqpy.${{ env.app_name }}'
@@ -86,7 +84,7 @@ jobs:
           api-private-key: ${{ secrets.APPSTORE_PRIVATE_KEY }}
 
       - name: Import Code-Signing Certificates
-        if: contains(matrix.name, 'ios') || matrix.name == 'macos'
+        if: matrix.name == 'ios' || matrix.name == 'macos'
         uses: apple-actions/import-codesign-certs@v2
         with:
           p12-file-base64: ${{ secrets.APPLE_CERTIFICATES }}
@@ -97,7 +95,7 @@ jobs:
         run: echo "ANDROID_NDK_ROOT=$ANDROID_HOME/ndk/23.2.8568313" >> $GITHUB_ENV
 
       - name: Set Xcode version
-        if: contains(matrix.name, 'ios') || matrix.name == 'macos'
+        if: matrix.name == 'ios' || matrix.name == 'macos'
         run: sudo xcode-select --switch /Applications/Xcode_14.3.1.app/Contents/Developer
 
       - name: Install required Linux packages
@@ -123,7 +121,7 @@ jobs:
         run: cmake --preset=${{ matrix.name }} -D CONAN_UPDATE=ON
 
       - name: Build
-        if: "!contains(matrix.name, 'ios')"
+        if: "!matrix.name == 'ios'"
         run: |
           cmake --build --preset=${{ matrix.name }}Debug
           cmake --build --preset=${{ matrix.name }}Release
@@ -142,5 +140,5 @@ jobs:
           if-no-files-found: error
 
       - name: 'Publish to App Store'
-        if: contains(matrix.name, 'ios') && github.event.inputs.publish == 'true'
+        if: matrix.name == 'ios' && github.event.inputs.publish == 'true'
         run: xcrun altool --upload-app --file $(find . -name *.ipa | head -n 1) --type ios --username ssrobins@gmail.com --password ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
