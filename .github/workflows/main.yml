@@ -98,7 +98,7 @@ jobs:
 
       - name: Set Xcode version
         if: contains(matrix.name, 'ios') || matrix.name == 'macos'
-        run: sudo xcode-select --switch /Applications/Xcode_14.1.app/Contents/Developer
+        run: sudo xcode-select --switch /Applications/Xcode_14.3.1.app/Contents/Developer
 
       - name: Install required Linux packages
         if: contains(matrix.name, 'android') || matrix.name == 'linux'
