@@ -30,11 +30,11 @@ jobs:
           - name: androidarm64
             os: ubuntu-20.04
           - name: ios
-            os: macos-12
+            os: macos-13
           - name: linux
             os: ubuntu-20.04
           - name: macos
-            os: macos-12
+            os: macos-13
           - name:  windows
             os: windows-2022
     steps:
@@ -84,13 +84,37 @@ jobs:
           p12-file-base64: ${{ secrets.APPLE_CERTIFICATES }}
           p12-password: ${{ secrets.APPLE_CERTIFICATES_PASSWORD }}
 
+      - name: Cache Python packages
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cache/pip
+            ~/Library/Caches/pip
+            ~\AppData\Local\pip\Cache
+          key: pip-${{ runner.os }}
+
+      - name: Cache Conan packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.conan2/p
+          key: conan-${{ matrix.name }}-${{ hashFiles('conanfile.py', 'profile.jinja') }}
+
+      - name: Cache Gradle packages
+        if: contains(matrix.name, 'android')
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+
       - name: Set Android NDK
         if: contains(matrix.name, 'android')
         run: echo "ANDROID_NDK_ROOT=$ANDROID_HOME/ndk/23.2.8568313" >> $GITHUB_ENV
 
       - name: Set Xcode version
         if: matrix.name == 'ios' || matrix.name == 'macos'
-        run: sudo xcode-select --switch /Applications/Xcode_13.4.1.app/Contents/Developer
+        run: sudo xcode-select --switch /Applications/Xcode_14.3.1.app/Contents/Developer
 
       - name: Install required Linux packages
         if: contains(matrix.name, 'android') || matrix.name == 'linux'
@@ -112,7 +136,7 @@ jobs:
           conan --version
 
       - name: Configure
-        run: cmake --preset=${{ matrix.name }} -D CONAN_BUILD_MISSING_PKGS=OFF -D CONAN_UPDATE=ON
+        run: cmake --preset=${{ matrix.name }} -D CONAN_UPDATE=ON
 
       - name: Build
         if: matrix.name != 'ios'
