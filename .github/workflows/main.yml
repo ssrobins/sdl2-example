@@ -35,8 +35,9 @@ jobs:
             os: ubuntu-20.04
           - name: macos
             os: macos-13
-          - name:  windows
+          - name: windows
             os: windows-2022
+            extra: -T v143,version=14.35
     steps:
       - uses: actions/checkout@v3
 
@@ -136,7 +137,7 @@ jobs:
           conan --version
 
       - name: Configure
-        run: cmake --preset=${{ matrix.name }} -D CONAN_UPDATE=ON
+        run: cmake --preset=${{ matrix.name }} ${{ matrix.extra }} -D CONAN_UPDATE=ON
 
       - name: Build
         if: matrix.name != 'ios'
