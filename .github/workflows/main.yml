@@ -37,7 +37,7 @@ jobs:
             os: macos-13
           - name: windows
             os: windows-2022
-            extra: -T v143,version=14.35
+            extra: -T v143,version=14.36
     steps:
       - uses: actions/checkout@v3
 
