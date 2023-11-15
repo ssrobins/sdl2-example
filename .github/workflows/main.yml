@@ -134,6 +134,7 @@ jobs:
         run: |
           cmake --version
           conan --version
+          python3 --version
 
       - name: Configure
         run: cmake --preset=${{ matrix.name }} -D CONAN_UPDATE=ON
