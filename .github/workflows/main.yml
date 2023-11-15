@@ -127,7 +127,7 @@ jobs:
 
       - name: Install Conan
         run: |
-          pip3 install conan --upgrade
+          pip3 install conan==2.0.13
           conan profile detect
 
       - name: Print versions
