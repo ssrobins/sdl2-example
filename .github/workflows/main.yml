@@ -137,7 +137,7 @@ jobs:
           python3 --version
 
       - name: Configure
-        run: cmake --preset=${{ matrix.name }} -D CONAN_UPDATE=ON
+        run: conan install --require zlib/1.3 --build=missing
 
       - name: Build
         if: matrix.name != 'ios'
