@@ -52,6 +52,10 @@ elseif(APPLE)
     set(CMAKE_OSX_DEPLOYMENT_TARGET 10.13)
 endif()
 
+list(APPEND CONAN_INSTALL_ARGS "--conf=tools.system.package_manager:mode=install")
+list(APPEND CONAN_INSTALL_ARGS "--conf=tools.system.package_manager:sudo=True")
+list(APPEND CONAN_INSTALL_ARGS "--conf=tools.cmake.cmaketoolchain:generator=Ninja Multi-Config")
+
 option(CONAN_UPDATE "Check for newer Conan packages" OFF)
 if(CONAN_UPDATE)
     list(APPEND CONAN_INSTALL_ARGS "--update")
