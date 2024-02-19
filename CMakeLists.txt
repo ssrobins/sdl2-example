@@ -26,6 +26,18 @@ elseif(ANDROID_ABI STREQUAL arm64-v8a)
     set(version_code 2)
 endif()
 
+list(APPEND CONAN_INSTALL_ARGS
+    "--build=missing"
+    "--conf=tools.system.package_manager:mode=install"
+    "--conf=tools.system.package_manager:sudo=True"
+    "--conf=tools.cmake.cmaketoolchain:generator=Ninja Multi-Config"
+)
+
+option(CONAN_UPDATE "Check for newer Conan packages" OFF)
+if(CONAN_UPDATE)
+    list(APPEND CONAN_INSTALL_ARGS "--update")
+endif()
+
 set(conan_provider_file "${CMAKE_BINARY_DIR}/conan_provider.cmake")
 if(NOT EXISTS "${conan_provider_file}")
     message(STATUS "Downloading conan_provider.cmake")
@@ -50,15 +62,6 @@ if(IOS)
     set(bluetooth_statement "App uses the SDL2 library, which supports Bluetooth controllers, but it's not currently used. No data is being collected!")
 elseif(APPLE)
     set(CMAKE_OSX_DEPLOYMENT_TARGET 10.13)
-endif()
-
-list(APPEND CONAN_INSTALL_ARGS "--conf=tools.system.package_manager:mode=install")
-list(APPEND CONAN_INSTALL_ARGS "--conf=tools.system.package_manager:sudo=True")
-list(APPEND CONAN_INSTALL_ARGS "--conf=tools.cmake.cmaketoolchain:generator=Ninja Multi-Config")
-
-option(CONAN_UPDATE "Check for newer Conan packages" OFF)
-if(CONAN_UPDATE)
-    list(APPEND CONAN_INSTALL_ARGS "--update")
 endif()
 
 set(CMAKE_CONFIGURATION_TYPES "Debug;Release")
