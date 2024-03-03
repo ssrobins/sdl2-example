@@ -22,4 +22,10 @@ set_target_properties(Rectangles PROPERTIES
     LINKER_LANGUAGE CXX
 )
 
+if(IOS)
+    set_target_properties(Rectangles PROPERTIES
+        XCODE_ATTRIBUTE_PROVISIONING_PROFILE_SPECIFIER "Rectangles Development"
+    )
+endif()
+
 install_executable(Rectangles)
