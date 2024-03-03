@@ -4,11 +4,11 @@
 <dict>
     <key>method</key>
     <string>app-store</string>
-    <key>teamID</key>
-    <string>${xcode_dev_team}</string>
+    <key>signingStyle</key>
+    <string>manual</string>
     <key>provisioningProfiles</key>
     <dict>
-        <key>*</key>
+        <key>com.dnqpy.Rectangles</key>
         <string>AppStore</string>
     </dict>
 </dict>
