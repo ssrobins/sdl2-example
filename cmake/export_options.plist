@@ -6,10 +6,5 @@
     <string>app-store</string>
     <key>teamID</key>
     <string>${xcode_dev_team}</string>
-    <key>provisioningProfiles</key>
-    <dict>
-        <key>*</key>
-        <string>AppStore</string>
-    </dict>
 </dict>
 </plist>
