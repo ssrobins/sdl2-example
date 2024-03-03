@@ -25,18 +25,9 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - name: androidarm
-            os: ubuntu-20.04
-          - name: androidarm64
-            os: ubuntu-20.04
           - name: ios
             os: macos-13
-          - name: linux
-            os: ubuntu-20.04
-          - name: macos
-            os: macos-13
-          - name: windows
-            os: windows-2022
+
     steps:
       - uses: actions/checkout@v3
 
