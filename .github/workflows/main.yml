@@ -137,6 +137,7 @@ jobs:
 
       - name: Package
         run: |
+          cpack --preset=${{ matrix.name }}Debug
           cpack --preset=${{ matrix.name }}Release
 
       - uses: actions/upload-artifact@v3
