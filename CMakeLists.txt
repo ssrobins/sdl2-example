@@ -47,7 +47,7 @@ if(NOT EXISTS "${conan_provider_file}")
 endif()
 set(CMAKE_PROJECT_TOP_LEVEL_INCLUDES "${conan_provider_file}")
 
-project(Rectangles VERSION 0.1.30)
+project(Rectangles VERSION 0.1.31)
 
 include(cmake/global_settings.cmake)
 
