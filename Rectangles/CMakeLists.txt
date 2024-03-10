@@ -24,7 +24,7 @@ set_target_properties(Rectangles PROPERTIES
 
 if(IOS)
     set_target_properties(Rectangles PROPERTIES
-        XCODE_ATTRIBUTE_PROVISIONING_PROFILE_SPECIFIER "Rectangles App Store"
+        XCODE_ATTRIBUTE_PROVISIONING_PROFILE_SPECIFIER "Rectangles Development"
     )
 endif()
 
