@@ -38,7 +38,7 @@ jobs:
           - name: windows
             os: windows-2022
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Print environment variables
         run: env
@@ -85,7 +85,7 @@ jobs:
           p12-password: ${{ secrets.APPLE_CERTIFICATES_PASSWORD }}
 
       - name: Cache Python packages
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             ~/.cache/pip
@@ -94,14 +94,14 @@ jobs:
           key: pip-${{ runner.os }}
 
       - name: Cache Conan packages
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.conan2
           key: conan-${{ matrix.name }}-${{ hashFiles('conanfile.py', 'profile.jinja') }}
 
       - name: Cache Gradle packages
         if: contains(matrix.name, 'android')
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             ~/.gradle/caches
@@ -149,7 +149,7 @@ jobs:
           cpack --preset=${{ matrix.name }}Debug
           cpack --preset=${{ matrix.name }}Release
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: ${{ env.app_name }}_artifact${{ github.run_number }}
           path: |
