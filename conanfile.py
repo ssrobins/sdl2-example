@@ -40,4 +40,4 @@ class Conan(ConanFile):
         self.options["sdl/*"].xinput = self.settings.os == "Linux"
 
     def requirements(self):
-        self.requires("sdl/2.30.2")
+        self.requires("sdl/2.30.4")
