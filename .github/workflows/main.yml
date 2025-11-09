@@ -30,11 +30,11 @@ jobs:
           - name: androidarm64
             os: ubuntu-22.04
           - name: ios
-            os: macos-14
+            os: macos-13
           - name: linux
             os: ubuntu-22.04
           - name: macos
-            os: macos-14
+            os: macos-13
           - name: windows
             os: windows-2022
     steps:
