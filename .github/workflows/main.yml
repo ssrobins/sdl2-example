@@ -26,13 +26,13 @@ jobs:
       matrix:
         include:
           - name: androidarm
-            os: ubuntu-20.04
+            os: ubuntu-22.04
           - name: androidarm64
-            os: ubuntu-20.04
+            os: ubuntu-22.04
           - name: ios
             os: macos-13
           - name: linux
-            os: ubuntu-20.04
+            os: ubuntu-22.04
           - name: macos
             os: macos-13
           - name: windows
