@@ -57,7 +57,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_OPTIMIZE_DEPENDENCIES true)
 
 if(IOS)
-    set(CMAKE_OSX_DEPLOYMENT_TARGET 11.0)
+    set(CMAKE_OSX_DEPLOYMENT_TARGET 12.0)
     set(CMAKE_OSX_ARCHITECTURES "arm64")
     set(bluetooth_statement "App uses the SDL2 library, which supports Bluetooth controllers, but it's not currently used. No data is being collected!")
 elseif(APPLE)
