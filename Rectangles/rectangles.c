@@ -69,13 +69,13 @@ main(int argc, char *argv[])
     /* create window and renderer */
     window =
         SDL_CreateWindow(NULL, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT,
-            SDL_WINDOW_OPENGL);
+            SDL_WINDOW_ALLOW_HIGHDPI);
     if (!window) {
         printf("Could not initialize Window\n");
         return 1;
     }
 
-    renderer = SDL_CreateRenderer(window, -1, 0);
+    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_PRESENTVSYNC);
     if (!renderer) {
         printf("Could not create renderer\n");
         return 1;
