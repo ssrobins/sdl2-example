@@ -1,7 +1,7 @@
 {
   "recommendations": [
     "ms-vscode.cmake-tools",
-    "ms-vscode.cpptools"
-  ],
-  "unwantedRecommendations": []
+    "ms-vscode.cpptools",
+    "vadimcn.vscode-lldb"
+  ]
 }
