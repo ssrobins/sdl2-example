@@ -2,7 +2,7 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "CMake: Launch (macOS / LLDB)",
+      "name": "CMake: Launch (macOS/Linux / LLDB)",
       "type": "lldb",
       "request": "launch",
       "program": "${command:cmake.launchTargetPath}",
@@ -17,24 +17,6 @@
         // "MY_VAR": "value"
       },
       "terminal": "integrated"
-    },
-        {
-      "name": "CMake: Launch (Linux / LLDB)",
-      "type": "lldb",
-      "request": "launch",
-      "program": "${command:cmake.launchTargetPath}",
-      "args": [
-        // Example: pass arguments to your program
-        // "arg1", "arg2=value", "--flag"
-      ],
-      "cwd": "${command:cmake.launchTargetDirectory}",
-      "stopOnEntry": false,
-      "env": {
-        // Example: set environment variables for your program
-        // "MY_VAR": "value"
-      },
-      "terminal": "integrated",
-      "MIMode": "lldb"
     },
     {
       "name": "CMake: Launch (Windows / MSVC)",
