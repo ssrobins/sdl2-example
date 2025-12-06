@@ -1,7 +1,7 @@
 add_sdl_executable(Rectangles MACOSX_BUNDLE WIN32)
 
 target_sources(Rectangles PRIVATE
-    rectangles.c
+    rectangles.cpp
 )
 
 if(APPLE)

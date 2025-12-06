@@ -9,6 +9,13 @@
 #include <stdlib.h>
 #include <time.h>
 
+#ifdef _WIN32
+#include <windows.h>
+#include <shlobj.h>
+#include <atlbase.h>
+#include <versionhelpers.h>
+#endif
+
 #define SCREEN_WIDTH 320
 #define SCREEN_HEIGHT 480
 
@@ -56,6 +63,27 @@ main(int argc, char *argv[])
     SDL_Renderer *renderer;
     int done;
     SDL_Event event;
+
+#ifdef _WIN32
+    /* Test Windows SDK headers */
+    WCHAR documentsPath[MAX_PATH];
+    if (SUCCEEDED(SHGetFolderPathW(NULL, CSIDL_MYDOCUMENTS, NULL, 0, documentsPath))) {
+        printf("Documents folder: %ls\n", documentsPath);
+    }
+    
+    /* Test version helper API */
+    if (IsWindows10OrGreater()) {
+        printf("Running on Windows 10 or greater\n");
+    } else if (IsWindows8OrGreater()) {
+        printf("Running on Windows 8 or greater\n");
+    } else if (IsWindows7OrGreater()) {
+        printf("Running on Windows 7 or greater\n");
+    }
+    
+    /* Test ATL - create a CComBSTR */
+    CComBSTR bstr(L"Testing ATL");
+    printf("ATL test string length: %d\n", bstr.Length());
+#endif
 
     /* initialize SDL */
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
