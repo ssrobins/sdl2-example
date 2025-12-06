@@ -77,6 +77,7 @@ include(cmake/target_assets.cmake)
 enable_testing()
 
 add_subdirectory(Rectangles)
+add_subdirectory(HelloWorldCS)
 
 set(CPACK_PACKAGE_FILE_NAME ${CMAKE_PROJECT_NAME}_${PROJECT_VERSION}_${platform})
 include(CPack)
