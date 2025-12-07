@@ -16,6 +16,10 @@ if(ANDROID_ABI)
     set(android_sdk_version 33)
 endif()
 
+if(WIN32 AND CMAKE_GENERATOR MATCHES "Ninja" AND NOT CMAKE_TOOLCHAIN_FILE)
+    set(CMAKE_TOOLCHAIN_FILE ${CMAKE_CURRENT_SOURCE_DIR}/cmake/WindowsToolchain/Windows.MSVC.toolchain.cmake)
+endif()
+
 if(ANDROID_ABI STREQUAL armeabi-v7a)
     set(android_min_sdk_version 19)
     set(ANDROID_PLATFORM android-${android_min_sdk_version})
