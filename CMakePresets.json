@@ -79,6 +79,16 @@
                 "lhs": "${hostSystemName}",
                 "rhs": "Windows"
             }
+        },
+        {
+            "name": "windowsNinja",
+            "inherits": "default",
+            "generator": "Ninja Multi-Config",
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Windows"
+            }
         }
     ],
     "buildPresets": [
@@ -159,6 +169,18 @@
             "inherits": "default",
             "configurePreset": "windows",
             "configuration": "Release"
+        },
+        {
+            "name": "windowsNinjaDebug",
+            "inherits": "default",
+            "configurePreset": "windowsNinja",
+            "configuration": "Debug"
+        },
+        {
+            "name": "windowsNinjaRelease",
+            "inherits": "default",
+            "configurePreset": "windowsNinja",
+            "configuration": "Release"
         }
     ],
     "packagePresets": [
@@ -220,6 +242,16 @@
         {
             "name": "windowsRelease",
             "configurePreset": "windows",
+            "configurations": ["Release"]
+        },
+        {
+            "name": "windowsNinjaDebug",
+            "configurePreset": "windowsNinja",
+            "configurations": ["Debug"]
+        },
+        {
+            "name": "windowsNinjaRelease",
+            "configurePreset": "windowsNinja",
             "configurations": ["Release"]
         }
     ],
@@ -417,6 +449,40 @@
                 {
                     "type": "package",
                     "name": "windowsRelease"
+                }
+            ]
+        },
+        {
+            "name": "windowsNinjaDebug",
+            "steps": [
+                {
+                    "type": "configure",
+                    "name": "windowsNinja"
+                },
+                {
+                    "type": "build",
+                    "name": "windowsNinjaDebug"
+                },
+                {
+                    "type": "package",
+                    "name": "windowsNinjaDebug"
+                }
+            ]
+        },
+        {
+            "name": "windowsNinjaRelease",
+            "steps": [
+                {
+                    "type": "configure",
+                    "name": "windowsNinja"
+                },
+                {
+                    "type": "build",
+                    "name": "windowsNinjaRelease"
+                },
+                {
+                    "type": "package",
+                    "name": "windowsNinjaRelease"
                 }
             ]
         }
