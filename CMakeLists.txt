@@ -19,11 +19,11 @@ endif()
 if(ANDROID_ABI STREQUAL armeabi-v7a)
     set(android_min_sdk_version 19)
     set(ANDROID_PLATFORM android-${android_min_sdk_version})
-    set(version_code 8)
+    set(version_code 10)
 elseif(ANDROID_ABI STREQUAL arm64-v8a)
     set(android_min_sdk_version 21)
     set(ANDROID_PLATFORM android-${android_min_sdk_version})
-    set(version_code 9)
+    set(version_code 11)
 endif()
 
 list(APPEND CONAN_INSTALL_ARGS
